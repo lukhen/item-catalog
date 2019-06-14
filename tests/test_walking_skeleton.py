@@ -23,7 +23,7 @@ def test_e2e():
 
     resp = requests.get("http://localhost:5000")
 
-    assert resp.status == "ok"
+    assert resp.status_code == 200
 
 
 def install_app_from_github():
