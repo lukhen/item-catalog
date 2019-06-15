@@ -1,17 +1,21 @@
 import pytest
 import sys
 import requests
-import pathlib
+from pathlib import PurePath
 import subprocess
 import time
+from tempfile import TemporaryDirectory
 
 
 @pytest.fixture
 def app_process():
-    install_app_from_github()
-    proc = subprocess.Popen(["./tmp/.venv/bin/python", "-m", "flaskapp"])
-    yield proc
-    proc.kill()
+    with TemporaryDirectory() as tmpdir:
+        install_app_from_github(tmpdir)
+        proc = subprocess.Popen(
+            [PurePath(tmpdir, ".venv", "bin", "python"), "-m", "flaskapp"]
+        )
+        yield proc
+        proc.kill()
 
 
 @pytest.mark.e2e
@@ -34,12 +38,11 @@ def test_e2e(app_process):
     assert status_code == 200
 
 
-def install_app_from_github():
-    pathlib.Path("./tmp").mkdir(parents=True, exist_ok=True)
-    subprocess.run(["python", "-m", "venv", "./tmp/.venv"])
+def install_app_from_github(location_dir):
+    subprocess.run(["python", "-m", "venv", PurePath(location_dir, ".venv")])
     subprocess.run(
         [
-            "./tmp/.venv/bin/pip",
+            PurePath(location_dir, ".venv", "bin", "pip"),
             "install",
             "git+https://github.com/lukhen/item-catalog.git",
         ]
