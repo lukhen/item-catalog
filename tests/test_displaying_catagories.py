@@ -22,3 +22,9 @@ def test_displaying_1_category():
     catalog = Mock()
     catalog.all_categories.return_value = ["Soccer"]
     assert categories(catalog) == "Soccer"
+
+
+def test_displaying_many():
+    catalog = Mock()
+    catalog.all_categories.return_value = ["Soccer", "Baseball", "Sailing"]
+    assert categories(catalog) == "Soccer\nBaseball\nSailing"

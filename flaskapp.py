@@ -12,7 +12,7 @@ class InMemoryCatalog:
 def categories(catalog=InMemoryCatalog()):
     all_cats = catalog.all_categories()
     if all_cats:
-        return all_cats[0]
+        return "\n".join(all_cats)
     else:
         return ""
 
