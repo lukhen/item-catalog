@@ -10,11 +10,7 @@ class InMemoryCatalog:
 
 @app.route("/")
 def categories(catalog=InMemoryCatalog()):
-    all_cats = catalog.all_categories()
-    if all_cats:
-        return "\n".join(all_cats)
-    else:
-        return ""
+    return "\n".join(catalog.all_categories())
 
 
 def main():
