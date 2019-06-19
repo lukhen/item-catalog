@@ -1,4 +1,5 @@
 from flaskapp import categories
+from unittest.mock import Mock
 import pytest
 
 
@@ -12,4 +13,12 @@ def test_e2e():
 
 
 def test_displaying_0_categories():
-    assert categories() == ""
+    catalog = Mock()
+    catalog.all_categories.return_value = []
+    assert categories(catalog) == ""
+
+
+def test_displaying_1_category():
+    catalog = Mock()
+    catalog.all_categories.return_value = ["Soccer"]
+    assert categories(catalog) == "Soccer"
