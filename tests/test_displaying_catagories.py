@@ -11,5 +11,5 @@ def test_e2e():
     """
 
 
-def test_displaying_list_of_categories():
+def test_displaying_0_categories():
     assert categories() == ""
