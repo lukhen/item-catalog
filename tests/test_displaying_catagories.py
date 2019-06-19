@@ -1,4 +1,4 @@
-from flaskapp import index
+from flaskapp import categories
 import pytest
 
 
@@ -12,4 +12,4 @@ def test_e2e():
 
 
 def test_displaying_list_of_categories():
-    assert index() == ""
+    assert categories() == ""
