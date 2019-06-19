@@ -17,4 +17,5 @@ setup(
     author_email="lukasz.hen@gmail.com",
     url="https://github.com/lukhen/item-catalog",
     packages=find_packages(exclude=("tests", "docs")),
+    install_requires=["flask"],
 )
