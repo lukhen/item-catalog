@@ -13,10 +13,9 @@ def test_e2e():
 
 
 def test_displaying_many():
-    catalog = Mock()
-    catalog.all_categories.return_value = ["Soccer", "Baseball", "Sailing"]
+    categories = ["Soccer", "Baseball", "Sailing"]
     render = Mock()
 
-    catagories_view(catalog.all_categories(), render)
+    catagories_view(categories, render)
 
     render.assert_called_once_with(["Soccer", "Baseball", "Sailing"])
