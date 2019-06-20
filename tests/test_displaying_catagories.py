@@ -1,4 +1,4 @@
-from flaskapp import catagories_view
+from flaskapp import catagories_view, render_categories_as_plain_text
 from unittest.mock import Mock
 import pytest
 
@@ -15,16 +15,18 @@ def test_e2e():
 def test_displaying_0_categories():
     catalog = Mock()
     catalog.all_categories.return_value = []
-    assert catagories_view(catalog) == ""
+    assert catagories_view(catalog) == render_categories_as_plain_text([])
 
 
 def test_displaying_1_category():
     catalog = Mock()
     catalog.all_categories.return_value = ["Soccer"]
-    assert catagories_view(catalog) == "Soccer"
+    assert catagories_view(catalog) == render_categories_as_plain_text(["Soccer"])
 
 
 def test_displaying_many():
     catalog = Mock()
     catalog.all_categories.return_value = ["Soccer", "Baseball", "Sailing"]
-    assert catagories_view(catalog) == "Soccer\nBaseball\nSailing"
+    assert catagories_view(catalog) == render_categories_as_plain_text(
+        ["Soccer", "Baseball", "Sailing"]
+    )

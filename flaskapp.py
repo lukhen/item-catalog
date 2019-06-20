@@ -8,9 +8,15 @@ class InMemoryCatalog:
         return []
 
 
+def render_categories_as_plain_text(categories):
+    return "\n".join(categories)
+
+
 @app.route("/")
-def catagories_view(catalog=InMemoryCatalog()):
-    return "\n".join(catalog.all_categories())
+def catagories_view(
+    catalog=InMemoryCatalog(), render_categories=render_categories_as_plain_text
+):
+    return render_categories(catalog.all_categories())
 
 
 def main():
