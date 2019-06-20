@@ -15,18 +15,28 @@ def test_e2e():
 def test_displaying_0_categories():
     catalog = Mock()
     catalog.all_categories.return_value = []
-    assert catagories_view(catalog) == render_categories_as_plain_text([])
+    render = Mock()
+
+    catagories_view(catalog, render)
+
+    render.assert_called_once_with([])
 
 
 def test_displaying_1_category():
     catalog = Mock()
     catalog.all_categories.return_value = ["Soccer"]
-    assert catagories_view(catalog) == render_categories_as_plain_text(["Soccer"])
+    render = Mock()
+
+    catagories_view(catalog, render)
+
+    render.assert_called_once_with(["Soccer"])
 
 
 def test_displaying_many():
     catalog = Mock()
     catalog.all_categories.return_value = ["Soccer", "Baseball", "Sailing"]
-    assert catagories_view(catalog) == render_categories_as_plain_text(
-        ["Soccer", "Baseball", "Sailing"]
-    )
+    render = Mock()
+
+    catagories_view(catalog, render)
+
+    render.assert_called_once_with(["Soccer", "Baseball", "Sailing"])
