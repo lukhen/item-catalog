@@ -12,7 +12,7 @@ def test_e2e():
     """
 
 
-def test_displaying_many():
+def test_rendering():
     categories = ["Soccer", "Baseball", "Sailing"]
     render = Mock()
 
