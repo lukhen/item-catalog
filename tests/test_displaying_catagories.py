@@ -12,26 +12,6 @@ def test_e2e():
     """
 
 
-def test_displaying_0_categories():
-    catalog = Mock()
-    catalog.all_categories.return_value = []
-    render = Mock()
-
-    catagories_view(catalog, render)
-
-    render.assert_called_once_with([])
-
-
-def test_displaying_1_category():
-    catalog = Mock()
-    catalog.all_categories.return_value = ["Soccer"]
-    render = Mock()
-
-    catagories_view(catalog, render)
-
-    render.assert_called_once_with(["Soccer"])
-
-
 def test_displaying_many():
     catalog = Mock()
     catalog.all_categories.return_value = ["Soccer", "Baseball", "Sailing"]
