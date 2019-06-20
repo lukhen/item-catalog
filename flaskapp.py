@@ -14,9 +14,10 @@ def render_categories_as_plain_text(categories):
 
 @app.route("/")
 def catagories_view(
-    catalog=InMemoryCatalog(), render_categories=render_categories_as_plain_text
+    categories=InMemoryCatalog().all_categories(),
+    render_categories=render_categories_as_plain_text,
 ):
-    return render_categories(catalog.all_categories())
+    return render_categories(categories)
 
 
 def main():
