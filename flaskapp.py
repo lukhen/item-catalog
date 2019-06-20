@@ -9,7 +9,7 @@ class InMemoryCatalog:
 
 
 @app.route("/")
-def categories(catalog=InMemoryCatalog()):
+def catagories_view(catalog=InMemoryCatalog()):
     return "\n".join(catalog.all_categories())
 
 
