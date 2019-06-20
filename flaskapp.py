@@ -1,21 +1,25 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 class InMemoryCatalog:
     def all_categories(self):
-        return []
+        return ["Soccer", "Sailing", "Football"]
 
 
 def render_categories_as_plain_text(categories):
     return "\n".join(categories)
 
 
+def render_categories_with_template(categories):
+    return render_template("categories_template.html", categories=categories)
+
+
 @app.route("/")
 def catagories_view(
     categories=InMemoryCatalog().all_categories(),
-    render_categories=render_categories_as_plain_text,
+    render_categories=render_categories_with_template,
 ):
     return render_categories(categories)
 
