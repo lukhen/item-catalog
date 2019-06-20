@@ -1,4 +1,4 @@
-from flaskapp import catagories_view, render_categories_as_plain_text
+from flaskapp import catagories_view
 from unittest.mock import Mock
 import pytest
 

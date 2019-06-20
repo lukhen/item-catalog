@@ -8,10 +8,6 @@ class InMemoryCatalog:
         return ["Soccer", "Sailing", "Football"]
 
 
-def render_categories_as_plain_text(categories):
-    return "\n".join(categories)
-
-
 def render_categories_with_template(categories):
     return render_template("categories_template.html", categories=categories)
 
