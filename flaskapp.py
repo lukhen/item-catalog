@@ -26,6 +26,10 @@ def catagories_view(
     return render_categories(categories)
 
 
+def new_category(render_new_category_form):
+    render_new_category_form()
+
+
 def main():
     app.run(host="0.0.0.0", port=5000)
 
