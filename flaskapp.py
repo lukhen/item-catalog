@@ -4,8 +4,14 @@ app = Flask(__name__)
 
 
 class InMemoryCatalog:
+    def __init__(self):
+        self._categories_by_name = {}
+
     def all_categories(self):
-        return ["Soccer", "Sailing", "Football"]
+        return list(self._categories_by_name.keys())
+
+    def add_category(self, category):
+        self._categories_by_name[category] = category
 
 
 def render_categories_with_template(categories):

@@ -1,4 +1,4 @@
-from flaskapp import catagories_view
+from flaskapp import catagories_view, InMemoryCatalog
 from unittest.mock import Mock
 import pytest
 
@@ -19,3 +19,11 @@ def test_rendering():
     catagories_view(categories, render)
 
     render.assert_called_once_with(["Soccer", "Baseball", "Sailing"])
+
+
+def test_retrieving_from_in_memory_catalog():
+    catalog = InMemoryCatalog()
+    catalog.add_category("Soccer")
+    catalog.add_category("Baseball")
+    catalog.add_category("Sailing")
+    assert catalog.all_categories() == ["Soccer", "Baseball", "Sailing"]
