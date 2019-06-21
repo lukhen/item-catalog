@@ -18,6 +18,10 @@ def render_categories_with_template(categories):
     return render_template("categories_template.html", categories=categories)
 
 
+def render_new_category_form():
+    return render_template("new_category.html")
+
+
 @app.route("/")
 def catagories_view(
     categories=InMemoryCatalog().all_categories(),
@@ -26,8 +30,9 @@ def catagories_view(
     return render_categories(categories)
 
 
-def new_category(render_new_category_form):
-    render_new_category_form()
+@app.route("/addcategory")
+def new_category(render_new_category_form=render_new_category_form):
+    return render_new_category_form()
 
 
 def main():
