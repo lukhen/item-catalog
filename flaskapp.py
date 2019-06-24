@@ -14,23 +14,17 @@ class InMemoryCatalog:
         self._categories_by_name[category] = category
 
 
-def render_categories_with_template(categories):
-    return render_template("categories_template.html", categories=categories)
-
-
-def render_new_category_form():
-    return render_template("new_category.html")
-
-
 class Controller:
     def __init__(self, catalog):
         self._catalog = catalog
 
     def new_category_get(self):
-        return render_new_category_form()
+        return render_template("new_category.html")
 
     def on_categories(self):
-        self.render_all_categories(self._catalog.all_categories())
+        return render_template(
+            "categories_template.html", categories=self._catalog.all_categories()
+        )
 
 
 catalog = InMemoryCatalog()
