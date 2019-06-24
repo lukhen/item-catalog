@@ -1,4 +1,6 @@
 import flaskapp
+from flask import render_template
+from flaskapp import Controller
 from unittest.mock import Mock
 import pytest
 
@@ -19,3 +21,13 @@ def test_app_get():
     flaskapp.controller = controller
     client.get("/addcategory")
     controller.new_category_get.assert_called()
+
+
+def test_controller_get():
+    catalog = Mock()
+    catalog.all_categories.return_value = ["Football", "Sailing"]
+    controller = Controller(catalog)
+    with flaskapp.app.app_context():
+        assert controller.new_category_get() == render_template(
+            "new_category.html", categories=["Football", "Sailing"]
+        )
