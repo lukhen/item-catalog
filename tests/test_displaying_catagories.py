@@ -1,3 +1,4 @@
+import flaskapp
 from flaskapp import catagories_view, InMemoryCatalog
 from unittest.mock import Mock
 import pytest
@@ -12,13 +13,13 @@ def test_e2e():
     """
 
 
-def test_rendering():
-    categories = ["Soccer", "Baseball", "Sailing"]
-    render = Mock()
+def test_app():
+    controller = Mock()
+    client = flaskapp.app.test_client()
+    flaskapp.controller = controller
+    client.get("/")
 
-    catagories_view(categories, render)
-
-    render.assert_called_once_with(["Soccer", "Baseball", "Sailing"])
+    controller.on_categories.assert_called()
 
 
 def test_retrieving_from_in_memory_catalog():

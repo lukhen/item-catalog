@@ -23,19 +23,23 @@ def render_new_category_form():
 
 
 class Controller:
+    def __init__(self, catalog):
+        self._catalog = catalog
+
     def new_category_get(self):
         return render_new_category_form()
 
+    def on_categories(self):
+        self.render_all_categories(self._catalog.all_categories())
 
-controller = Controller()
+
+catalog = InMemoryCatalog()
+controller = Controller(catalog)
 
 
 @app.route("/")
-def catagories_view(
-    categories=InMemoryCatalog().all_categories(),
-    render_categories=render_categories_with_template,
-):
-    return render_categories(categories)
+def catagories_view():
+    return controller.on_categories()
 
 
 @app.route("/addcategory")
