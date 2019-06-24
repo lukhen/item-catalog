@@ -14,7 +14,7 @@ def test_e2e():
     """
 
 
-def test_controller_get():
+def test_app_get():
     controller = Mock()
     client = flaskapp.app.test_client()
     flaskapp.controller = controller
