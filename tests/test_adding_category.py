@@ -1,5 +1,4 @@
 import flaskapp
-from flaskapp import new_category
 from unittest.mock import Mock
 import pytest
 
