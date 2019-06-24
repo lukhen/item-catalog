@@ -1,3 +1,4 @@
+import flaskapp
 from flaskapp import new_category
 from unittest.mock import Mock
 import pytest
@@ -13,7 +14,9 @@ def test_e2e():
     """
 
 
-def test_rendering_newcategory_form():
-    render_new_category_form = Mock()
-    new_category(render_new_category_form)
-    render_new_category_form.assert_called()
+def test_controller_get():
+    controller = Mock()
+    client = flaskapp.app.test_client()
+    flaskapp.controller = controller
+    client.get("/addcategory")
+    controller.new_category_get.assert_called()

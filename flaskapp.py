@@ -22,6 +22,14 @@ def render_new_category_form():
     return render_template("new_category.html")
 
 
+class Controller:
+    def new_category_get(self):
+        return render_new_category_form()
+
+
+controller = Controller()
+
+
 @app.route("/")
 def catagories_view(
     categories=InMemoryCatalog().all_categories(),
@@ -31,8 +39,8 @@ def catagories_view(
 
 
 @app.route("/addcategory")
-def new_category(render_new_category_form=render_new_category_form):
-    return render_new_category_form()
+def new_category():
+    return controller.new_category_get()
 
 
 def main():
