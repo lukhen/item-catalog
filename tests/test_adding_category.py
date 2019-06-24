@@ -31,3 +31,12 @@ def test_controller_get():
         assert controller.new_category_get() == render_template(
             "new_category.html", categories=["Football", "Sailing"]
         )
+
+
+def test_app_post():
+    controller = Mock()
+    client = flaskapp.app.test_client()
+    flaskapp.controller = controller
+    new_category = "Programming"
+    client.post("/addcategory", data={"category_name": new_category})
+    controller.new_category_post.assert_called_with(new_category)

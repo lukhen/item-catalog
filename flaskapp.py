@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -36,9 +36,12 @@ def catagories_view():
     return controller.on_categories()
 
 
-@app.route("/addcategory")
+@app.route("/addcategory", methods=["GET", "POST"])
 def new_category():
-    return controller.new_category_get()
+    if request.method == "GET":
+        return controller.new_category_get()
+    else:
+        return controller.new_category_post(request.form["category_name"])
 
 
 def main():
