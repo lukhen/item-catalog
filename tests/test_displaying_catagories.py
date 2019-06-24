@@ -1,5 +1,5 @@
 import flaskapp
-from flaskapp import catagories_view, InMemoryCatalog
+from flaskapp import categories_view, InMemoryCatalog
 from unittest.mock import Mock
 import pytest
 

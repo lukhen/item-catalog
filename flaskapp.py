@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -35,7 +35,7 @@ controller = Controller(catalog)
 
 
 @app.route("/")
-def catagories_view():
+def categories_view():
     return controller.on_categories()
 
 
@@ -44,7 +44,8 @@ def new_category():
     if request.method == "GET":
         return controller.new_category_get()
     else:
-        return controller.new_category_post(request.form["category_name"])
+        controller.new_category_post(request.form["category_name"])
+        return redirect(url_for("categories_view"))
 
 
 def main():
