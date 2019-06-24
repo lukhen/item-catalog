@@ -20,7 +20,7 @@ def test_app_get():
     client = flaskapp.app.test_client()
     flaskapp.controller = controller
     client.get("/addcategory")
-    controller.new_category_get.assert_called()
+    controller.new_category_form_requested.assert_called()
 
 
 def test_controller_get():
@@ -28,7 +28,7 @@ def test_controller_get():
     catalog.all_categories.return_value = ["Football", "Sailing"]
     controller = Controller(catalog)
     with flaskapp.app.app_context():
-        assert controller.new_category_get() == render_template(
+        assert controller.new_category_form_requested() == render_template(
             "new_category.html", categories=["Football", "Sailing"]
         )
 
@@ -39,12 +39,12 @@ def test_app_post():
     flaskapp.controller = controller
     new_category = "Programming"
     client.post("/addcategory", data={"category_name": new_category})
-    controller.new_category_post.assert_called_with(new_category)
+    controller.new_category_posted.assert_called_with(new_category)
 
 
 def test_controller_post():
     catalog = Mock()
     controller = Controller(catalog)
     category = "Some Irrelevant Category"
-    controller.new_category_post(category)
+    controller.new_category_posted(category)
     catalog.add_category.assert_called_with(category)

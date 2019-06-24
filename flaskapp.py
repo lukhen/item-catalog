@@ -18,15 +18,15 @@ class Controller:
     def __init__(self, catalog):
         self._catalog = catalog
 
-    def new_category_get(self):
+    def new_category_form_requested(self):
         return render_template("new_category.html")
 
-    def on_categories(self):
+    def all_categories_view_requested(self):
         return render_template(
             "categories_template.html", categories=self._catalog.all_categories()
         )
 
-    def new_category_post(self, category):
+    def new_category_posted(self, category):
         self._catalog.add_category(category)
 
 
@@ -36,15 +36,15 @@ controller = Controller(catalog)
 
 @app.route("/")
 def categories_view():
-    return controller.on_categories()
+    return controller.all_categories_view_requested()
 
 
 @app.route("/addcategory", methods=["GET", "POST"])
 def new_category():
     if request.method == "GET":
-        return controller.new_category_get()
+        return controller.new_category_form_requested()
     else:
-        controller.new_category_post(request.form["category_name"])
+        controller.new_category_posted(request.form["category_name"])
         return redirect(url_for("categories_view"))
 
 

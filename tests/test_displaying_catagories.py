@@ -19,7 +19,7 @@ def test_app():
     flaskapp.controller = controller
     client.get("/")
 
-    controller.on_categories.assert_called()
+    controller.all_categories_view_requested.assert_called()
 
 
 def test_retrieving_from_in_memory_catalog():
