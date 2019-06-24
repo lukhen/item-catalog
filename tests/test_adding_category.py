@@ -40,3 +40,11 @@ def test_app_post():
     new_category = "Programming"
     client.post("/addcategory", data={"category_name": new_category})
     controller.new_category_post.assert_called_with(new_category)
+
+
+def test_controller_post():
+    catalog = Mock()
+    controller = Controller(catalog)
+    category = "Some Irrelevant Category"
+    controller.new_category_post(category)
+    catalog.add_category.assert_called_with(category)

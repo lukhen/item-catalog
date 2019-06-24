@@ -26,6 +26,9 @@ class Controller:
             "categories_template.html", categories=self._catalog.all_categories()
         )
 
+    def new_category_post(self, category):
+        self._catalog.add_category(category)
+
 
 catalog = InMemoryCatalog()
 controller = Controller(catalog)
