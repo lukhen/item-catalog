@@ -3,6 +3,11 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 
+class Item:
+    def __init__(self, name):
+        ...
+
+
 class InMemoryCatalog:
     def __init__(self):
         self._categories_by_name = {}
@@ -28,6 +33,11 @@ class Controller:
 
     def new_category_posted(self, category):
         self._catalog.add_category(category)
+
+    def category_requested(self, category_name):
+        return render_template(
+            "category_items_view.html", items=self._catalog.category_items(category_name)
+        )
 
 
 catalog = InMemoryCatalog()
