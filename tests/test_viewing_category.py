@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 
 @pytest.mark.e2e
-def test_e2e():
+def test_e2e_category_exists():
     """
     Manual test.
     User wants to see all items of 'sailing' category.
@@ -15,7 +15,7 @@ def test_e2e():
     """
 
 
-def test_app():
+def test_app_category_exists():
     catalog = Mock()
     category_name = "sailing"
     sailing_items = [Item("mainsheet"), Item("mainsail"), Item("rudder")]
