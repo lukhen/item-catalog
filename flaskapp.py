@@ -48,6 +48,11 @@ def new_category():
         return redirect(url_for("categories_view"))
 
 
+@app.route("/categories/<category_name>")
+def category_view(category_name):
+    return controller.category_requested(category_name)
+
+
 def main():
     app.run(host="0.0.0.0", port=5000)
 
