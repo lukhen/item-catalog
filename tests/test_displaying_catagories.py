@@ -1,6 +1,7 @@
 import flaskapp
 from flaskapp import categories_view, InMemoryCatalog
 from unittest.mock import Mock
+from flask import render_template
 import pytest
 
 
@@ -14,12 +15,19 @@ def test_e2e():
 
 
 def test_app():
-    controller = Mock()
+    catalog = Mock()
+    categories = ["Football", "Sailing", "Baseball"]
+    catalog.all_categories.return_value = categories
     client = flaskapp.app.test_client()
-    flaskapp.controller = controller
-    client.get("/")
-
-    controller.all_categories_view_requested.assert_called()
+    flaskapp.catalog = catalog
+    response = client.get("/")
+    with flaskapp.app.app_context():
+        assert (
+            response.data
+            == render_template(
+                "categories_template.html", categories=categories
+            ).encode()
+        )
 
 
 def test_retrieving_from_in_memory_catalog():

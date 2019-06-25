@@ -23,11 +23,6 @@ class Controller:
     def __init__(self, catalog):
         self._catalog = catalog
 
-    def all_categories_view_requested(self):
-        return render_template(
-            "categories_template.html", categories=self._catalog.all_categories()
-        )
-
     def category_requested(self, category_name):
         return render_template(
             "category_items_view.html",
@@ -41,7 +36,9 @@ controller = Controller(catalog)
 
 @app.route("/")
 def categories_view():
-    return controller.all_categories_view_requested()
+    return render_template(
+        "categories_template.html", categories=catalog.all_categories()
+    )
 
 
 @app.route("/addcategory", methods=["GET", "POST"])
