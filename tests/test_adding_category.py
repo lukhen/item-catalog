@@ -1,6 +1,5 @@
 import flaskapp
 from flask import render_template
-from flaskapp import Controller
 from unittest.mock import Mock
 import pytest
 

@@ -19,13 +19,7 @@ class InMemoryCatalog:
         self._categories_by_name[category] = category
 
 
-class Controller:
-    def __init__(self, catalog):
-        self._catalog = catalog
-
-
 catalog = InMemoryCatalog()
-controller = Controller(catalog)
 
 
 @app.route("/")

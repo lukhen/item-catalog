@@ -1,7 +1,7 @@
 import pytest
 import flaskapp
 from flask import render_template
-from flaskapp import Controller, Item
+from flaskapp import Item
 from unittest.mock import Mock
 
 
