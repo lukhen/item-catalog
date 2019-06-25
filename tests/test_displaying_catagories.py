@@ -31,8 +31,5 @@ def test_app():
 
 
 def test_retrieving_from_in_memory_catalog():
-    catalog = InMemoryCatalog()
-    catalog.add_category("Soccer")
-    catalog.add_category("Baseball")
-    catalog.add_category("Sailing")
+    catalog = InMemoryCatalog(["Soccer", "Baseball", "Sailing"])
     assert catalog.all_categories() == ["Soccer", "Baseball", "Sailing"]
