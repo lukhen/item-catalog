@@ -10,13 +10,13 @@ class Item:
 
 class InMemoryCatalog:
     def __init__(self):
-        self._categories_by_name = {}
+        self._categories = []
 
     def all_categories(self):
-        return list(self._categories_by_name.keys())
+        return self._categories
 
     def add_category(self, category):
-        self._categories_by_name[category] = category
+        self._categories.append(category)
 
 
 catalog = InMemoryCatalog()
