@@ -16,22 +16,19 @@ def test_e2e():
 
 
 def test_app():
-    controller = Mock()
-    client = flaskapp.app.test_client()
-    flaskapp.controller = controller
-    client.get("/categories/sailing")
-    controller.category_requested.assert_called_with("sailing")
-
-
-def test_controller():
     catalog = Mock()
     category_name = "sailing"
     sailing_items = [Item("mainsheet"), Item("mainsail"), Item("rudder")]
     catalog.category_items.side_effects = (
         lambda catname: sailing_items if catname == category_name else None
     )
-    controller = Controller(catalog)
+
+    client = flaskapp.app.test_client()
+
+    flaskapp.catalog = catalog
+    response = client.get("/categories/sailing")
     with flaskapp.app.app_context():
-        assert controller.category_requested(category_name) == render_template(
-            "category_items_view.html", items=sailing_items
+        assert (
+            response.data
+            == render_template("category_items_view.html", items=sailing_items).encode()
         )

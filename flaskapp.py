@@ -23,12 +23,6 @@ class Controller:
     def __init__(self, catalog):
         self._catalog = catalog
 
-    def category_requested(self, category_name):
-        return render_template(
-            "category_items_view.html",
-            items=self._catalog.category_items(category_name),
-        )
-
 
 catalog = InMemoryCatalog()
 controller = Controller(catalog)
@@ -52,7 +46,9 @@ def new_category():
 
 @app.route("/categories/<category_name>")
 def category_view(category_name):
-    return controller.category_requested(category_name)
+    return render_template(
+        "category_items_view.html", items=catalog.category_items(category_name)
+    )
 
 
 def main():
