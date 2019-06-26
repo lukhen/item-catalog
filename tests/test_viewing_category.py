@@ -18,7 +18,11 @@ def test_e2e_category_exists():
 def test_app_category_exists():
     catalog = Mock()
     category_name = "sailing"
-    sailing_items = [Item("mainsheet"), Item("mainsail"), Item("rudder")]
+    sailing_items = [
+        Item("mainsheet", "irrelevant category"),
+        Item("mainsail", "irrelevant category"),
+        Item("rudder", "irrelevant category"),
+    ]
     catalog.category_items.side_effects = (
         lambda catname: sailing_items if catname == category_name else None
     )
@@ -36,7 +40,28 @@ def test_app_category_exists():
 
 def test_in_memory_catalog_category_exists_and_only_one_category():
     categories = ["Sailing", "Football"]
-    sailing_items = [Item("mainsheet"), Item("mainsail"), Item("rudder")]
+    sailing_items = [
+        Item("mainsheet", "Sailing"),
+        Item("mainsail", "Sailing"),
+        Item("rudder", "Sailing"),
+    ]
     catalog = InMemoryCatalog(categories, sailing_items)
     category_name = "Sailing"
     assert catalog.category_items(category_name) == sailing_items
+
+
+def test_in_memory_catalog_category_exists_multiple_categories():
+    categories = ["Sailing", "Football"]
+    items = [
+        Item("mainsheet", "Sailing"),
+        Item("mainsail", "Sailing"),
+        Item("rudder", "Sailing"),
+        Item("ball", "Football"),
+        Item("gloves", "Football"),
+    ]
+    catalog = InMemoryCatalog(categories, items)
+    assert catalog.category_items("Sailing") == [
+        Item("mainsheet", "Sailing"),
+        Item("mainsail", "Sailing"),
+        Item("rudder", "Sailing"),
+    ]
