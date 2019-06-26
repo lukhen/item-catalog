@@ -9,7 +9,10 @@ class Item:
         self.category = category
 
     def __eq__(self, other):
-        return self.name == other.name
+        return self.name == other.name and self.category == other.category
+
+    def __repr__(self):
+        return "<Item: name={}, category={}>".format(self.name, self.category)
 
 
 class InMemoryCatalog:

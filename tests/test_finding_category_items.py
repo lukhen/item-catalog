@@ -34,6 +34,24 @@ class FindingCategoryItemsContract(ABC):
             Item("rudder", "Sailing"),
         ]
 
+    def test_category_exists_and_the_same_names_in_different_categories(self):
+        categories = ["Sailing", "Football"]
+        items = [
+            Item("mainsheet", "Sailing"),
+            Item("mainsail", "Sailing"),
+            Item("rudder", "Sailing"),
+            Item("ball", "Football"),
+            Item("gloves", "Football"),
+            Item("gloves", "Sailing"),
+        ]
+        catalog = self.catalog_with(categories, items)
+        assert catalog.category_items("Sailing") == [
+            Item("mainsheet", "Sailing"),
+            Item("mainsail", "Sailing"),
+            Item("rudder", "Sailing"),
+            Item("gloves", "Sailing"),
+        ]
+
 
 class TestFindingCategoryItemsInMemoryCatalog(FindingCategoryItemsContract):
     def catalog_with(self, categories, items):
