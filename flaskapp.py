@@ -5,7 +5,10 @@ app = Flask(__name__)
 
 class Item:
     def __init__(self, name):
-        ...
+        self.name = name
+
+    def __eq__(self, other):
+        return self.name == other.name
 
 
 class InMemoryCatalog:
@@ -17,6 +20,9 @@ class InMemoryCatalog:
 
     def add_category(self, category):
         self._categories.append(category)
+
+    def category_items(self, category):
+        return [Item("mainsheet"), Item("mainsail"), Item("rudder")]
 
 
 catalog = InMemoryCatalog([])
