@@ -1,5 +1,6 @@
-from flaskapp import Item, InMemoryCatalog
+from flaskapp import Item, InMemoryCatalog, CategoryException
 from abc import ABC, abstractmethod
+import pytest
 
 
 class FindingCategoryItemsContract(ABC):
@@ -58,6 +59,12 @@ class FindingCategoryItemsContract(ABC):
             Item("rudder", "Sailing"),
             Item("gloves", "Sailing"),
         ]
+
+    def test_category_not_exists(self):
+        with pytest.raises(CategoryException) as excinfo:
+            catalog = self.catalog_with(["Football"], [])
+            catalog.category_items("Sailing")
+        assert "No such category: {}".format("Sailing") in str(excinfo.value)
 
 
 class TestFindingCategoryItemsInMemoryCatalog(FindingCategoryItemsContract):

@@ -3,6 +3,10 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 
+class CategoryException(Exception):
+    ...
+
+
 class Item:
     def __init__(self, name, category):
         self.name = name
@@ -27,6 +31,8 @@ class InMemoryCatalog:
         self._categories.append(category)
 
     def category_items(self, category):
+        if category not in self._categories:
+            raise CategoryException("No such category: {}".format(category))
         return [item for item in self._items if item.category == category]
 
 
