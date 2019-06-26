@@ -1,7 +1,7 @@
 import pytest
 import flaskapp
 from flask import render_template
-from flaskapp import Item, InMemoryCatalog
+from flaskapp import Item
 from unittest.mock import Mock
 
 
@@ -36,32 +36,3 @@ def test_app_category_exists():
             response.data
             == render_template("category_items_view.html", items=sailing_items).encode()
         )
-
-
-def test_in_memory_catalog_category_exists_and_only_one_category():
-    categories = ["Sailing", "Football"]
-    sailing_items = [
-        Item("mainsheet", "Sailing"),
-        Item("mainsail", "Sailing"),
-        Item("rudder", "Sailing"),
-    ]
-    catalog = InMemoryCatalog(categories, sailing_items)
-    category_name = "Sailing"
-    assert catalog.category_items(category_name) == sailing_items
-
-
-def test_in_memory_catalog_category_exists_multiple_categories():
-    categories = ["Sailing", "Football"]
-    items = [
-        Item("mainsheet", "Sailing"),
-        Item("mainsail", "Sailing"),
-        Item("rudder", "Sailing"),
-        Item("ball", "Football"),
-        Item("gloves", "Football"),
-    ]
-    catalog = InMemoryCatalog(categories, items)
-    assert catalog.category_items("Sailing") == [
-        Item("mainsheet", "Sailing"),
-        Item("mainsail", "Sailing"),
-        Item("rudder", "Sailing"),
-    ]
