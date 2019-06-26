@@ -7,6 +7,13 @@ class FindingCategoryItemsContract(ABC):
     def catalog_with(self, categories, items):
         ...
 
+    def test_category_exists_zero_items_in_category(self):
+        categories = ["Sailing", "Football"]
+        sailing_items = [Item("mainsail", "Sailing")]
+        catalog = self.catalog_with(categories, sailing_items)
+
+        assert catalog.category_items("Football") == []
+
     def test_category_exists_and_only_one_category(self):
         categories = ["Sailing", "Football"]
         sailing_items = [
