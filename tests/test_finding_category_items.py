@@ -1,7 +1,12 @@
 from flaskapp import Item, InMemoryCatalog
+from abc import ABC, abstractmethod
 
 
-class TestInMemoryCatalog:
+class FindingCategoryItemsContract(ABC):
+    @abstractmethod
+    def catalog_with(self, categories, items):
+        ...
+
     def test_category_exists_and_only_one_category(self):
         categories = ["Sailing", "Football"]
         sailing_items = [
@@ -9,7 +14,7 @@ class TestInMemoryCatalog:
             Item("mainsail", "Sailing"),
             Item("rudder", "Sailing"),
         ]
-        catalog = InMemoryCatalog(categories, sailing_items)
+        catalog = self.catalog_with(categories, sailing_items)
         category_name = "Sailing"
         assert catalog.category_items(category_name) == sailing_items
 
@@ -22,9 +27,14 @@ class TestInMemoryCatalog:
             Item("ball", "Football"),
             Item("gloves", "Football"),
         ]
-        catalog = InMemoryCatalog(categories, items)
+        catalog = self.catalog_with(categories, items)
         assert catalog.category_items("Sailing") == [
             Item("mainsheet", "Sailing"),
             Item("mainsail", "Sailing"),
             Item("rudder", "Sailing"),
         ]
+
+
+class TestFindingCategoryItemsInMemoryCatalog(FindingCategoryItemsContract):
+    def catalog_with(self, categories, items):
+        return InMemoryCatalog(categories, items)
