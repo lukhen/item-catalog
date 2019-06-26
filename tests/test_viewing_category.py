@@ -17,22 +17,19 @@ def test_e2e_category_exists():
 
 def test_app_category_exists():
     catalog = Mock()
-    category_name = "sailing"
-    sailing_items = [
-        Item("mainsheet", "irrelevant category"),
-        Item("mainsail", "irrelevant category"),
-        Item("rudder", "irrelevant category"),
-    ]
+    irrelevant_items = [Item("name", "category_name")]
     catalog.category_items.side_effects = (
-        lambda catname: sailing_items if catname == category_name else None
+        lambda catname: irrelevant_items if catname == "category_name" else None
     )
 
     client = flaskapp.app.test_client()
 
     flaskapp.catalog = catalog
-    response = client.get("/categories/sailing")
+    response = client.get("/categories/category_name")
     with flaskapp.app.app_context():
         assert (
             response.data
-            == render_template("category_items_view.html", items=sailing_items).encode()
+            == render_template(
+                "category_items_view.html", items=irrelevant_items
+            ).encode()
         )
