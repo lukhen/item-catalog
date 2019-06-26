@@ -34,7 +34,7 @@ def test_app_category_exists():
         )
 
 
-def test_in_memory_catalog_category_exists():
+def test_in_memory_catalog_category_exists_and_only_one_category():
     categories = ["Sailing", "Football"]
     sailing_items = [Item("mainsheet"), Item("mainsail"), Item("rudder")]
     catalog = InMemoryCatalog(categories, sailing_items)
