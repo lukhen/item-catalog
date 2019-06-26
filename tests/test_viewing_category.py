@@ -36,10 +36,7 @@ def test_app_category_exists():
 
 def test_in_memory_catalog_category_exists():
     categories = ["Sailing", "Football"]
-    catalog = InMemoryCatalog(categories=categories)
+    sailing_items = [Item("mainsheet"), Item("mainsail"), Item("rudder")]
+    catalog = InMemoryCatalog(categories, sailing_items)
     category_name = "Sailing"
-    assert catalog.category_items(category_name) == [
-        Item("mainsheet"),
-        Item("mainsail"),
-        Item("rudder"),
-    ]
+    assert catalog.category_items(category_name) == sailing_items

@@ -12,8 +12,9 @@ class Item:
 
 
 class InMemoryCatalog:
-    def __init__(self, categories=[]):
+    def __init__(self, categories=[], items=[]):
         self._categories = categories
+        self._items = items
 
     def all_categories(self):
         return self._categories
@@ -22,10 +23,10 @@ class InMemoryCatalog:
         self._categories.append(category)
 
     def category_items(self, category):
-        return [Item("mainsheet"), Item("mainsail"), Item("rudder")]
+        return self._items
 
 
-catalog = InMemoryCatalog([])
+catalog = InMemoryCatalog([], [])
 
 
 @app.route("/")
