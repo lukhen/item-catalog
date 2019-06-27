@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, abort
 
 app = Flask(__name__)
 
@@ -57,9 +57,11 @@ def new_category():
 
 @app.route("/categories/<category_name>")
 def category_view(category_name):
-    return render_template(
-        "category_items_view.html", items=catalog.category_items(category_name)
-    )
+    try:
+        items = catalog.category_items(category_name)
+        return render_template("category_items_view.html", items=items)
+    except CategoryException as err:
+        return abort(404)
 
 
 def main():

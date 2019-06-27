@@ -1,7 +1,7 @@
 import pytest
 import flaskapp
 from flask import render_template
-from flaskapp import Item
+from flaskapp import Item, CategoryException
 from unittest.mock import Mock
 
 
@@ -33,3 +33,15 @@ def test_app_category_exists():
                 "category_items_view.html", items=irrelevant_items
             ).encode()
         )
+
+
+def test_app_category_not_exists():
+    catalog = Mock()
+    error_message = "::Some irrelevant message::"
+    catalog.category_items.side_effect = CategoryException(error_message)
+    client = flaskapp.app.test_client()
+
+    flaskapp.catalog = catalog
+    response = client.get("/categories/not_existing_category")
+    with flaskapp.app.app_context():
+        assert response.status == "404 NOT FOUND"
