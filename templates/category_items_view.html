@@ -1,6 +1,9 @@
 <!doctype html>
 <html>
    <body>
-     category items
+     {% for item in items %}
+     {{ item.name }}
+     <br>
+     {% endfor %}
    </body>
 </html>
