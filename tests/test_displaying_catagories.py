@@ -23,10 +23,8 @@ def test_app():
     response = client.get("/")
     with flaskapp.app.app_context():
         assert (
-            response.data
-            == render_template(
-                "categories_template.html", categories=categories
-            ).encode()
+            render_template("categories_template.html", categories=categories)
+            in response.data.decode()
         )
 
 

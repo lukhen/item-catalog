@@ -41,9 +41,7 @@ catalog = InMemoryCatalog([], [])
 
 @app.route("/")
 def categories_view():
-    return render_template(
-        "categories_template.html", categories=catalog.all_categories()
-    )
+    return render_template("layout.html", categories=catalog.all_categories(), items=[])
 
 
 @app.route("/addcategory", methods=["GET", "POST"])
@@ -59,7 +57,9 @@ def new_category():
 def category_view(category_name):
     try:
         items = catalog.category_items(category_name)
-        return render_template("category_items_view.html", items=items)
+        return render_template(
+            "layout.html", items=items, categories=catalog.all_categories()
+        )
     except CategoryException as err:
         return abort(404)
 
