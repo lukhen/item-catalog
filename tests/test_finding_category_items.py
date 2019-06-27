@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import pytest
 
 
-class FindingCategoryItemsContract(ABC):
+class FindingCategoryItemsInCatalogContract(ABC):
     @abstractmethod
     def catalog_with(self, categories, items):
         ...
@@ -67,6 +67,6 @@ class FindingCategoryItemsContract(ABC):
         assert "No such category: {}".format("Sailing") in str(excinfo.value)
 
 
-class TestFindingCategoryItemsInMemoryCatalog(FindingCategoryItemsContract):
+class TestFindingCategoryItemsInMemoryCatalog(FindingCategoryItemsInCatalogContract):
     def catalog_with(self, categories, items):
         return InMemoryCatalog(categories, items)
