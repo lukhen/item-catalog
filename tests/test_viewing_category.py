@@ -5,6 +5,11 @@ from flaskapp import Item, CategoryException
 from unittest.mock import Mock
 
 
+@pytest.fixture
+def client():
+    return flaskapp.app.test_client()
+
+
 @pytest.mark.e2e
 def test_e2e_category_exists():
     """
@@ -15,7 +20,7 @@ def test_e2e_category_exists():
     """
 
 
-def test_app_category_exists():
+def test_app_category_exists(client):
     catalog = Mock()
     irrelevant_items = [Item("name", "category_name")]
     catalog.category_items.side_effect = (
@@ -23,8 +28,6 @@ def test_app_category_exists():
     )
     # SMELL: possibly this test checks too much
     catalog.all_categories.return_value = []
-
-    client = flaskapp.app.test_client()
 
     flaskapp.catalog = catalog
     response = client.get("/category_name")
@@ -35,11 +38,10 @@ def test_app_category_exists():
         )
 
 
-def test_app_category_not_exists():
+def test_app_category_not_exists(client):
     catalog = Mock()
     error_message = "::Some irrelevant message::"
     catalog.category_items.side_effect = CategoryException(error_message)
-    client = flaskapp.app.test_client()
 
     flaskapp.catalog = catalog
     response = client.get("/not_existing_category")
