@@ -33,7 +33,7 @@ def test_app_category_exists(client):
     response = client.get("/category_name")
     with flaskapp.app.app_context():
         assert (
-            render_template("category_items_view.html", items=irrelevant_items)
+            render_template(flaskapp.ITEMS_TEMPLATE, items=irrelevant_items)
             in response.data.decode()
         )
 

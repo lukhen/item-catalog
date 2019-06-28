@@ -21,7 +21,7 @@ def test_app_get():
         assert (
             response.data
             == render_template(
-                "new_category.html", categories=["Football", "Sailing"]
+                flaskapp.NEW_CATEGORY_TEMPLATE, categories=["Football", "Sailing"]
             ).encode()
         )
 

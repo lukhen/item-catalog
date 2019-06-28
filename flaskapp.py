@@ -1,5 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
 
+MAIN_LAYOUT_TEMPLATE = "layout.html"
+CATEGORIES_TEMPLATE = "categories_template.html"
+NEW_CATEGORY_TEMPLATE = "new_category.html"
+ITEMS_TEMPLATE = "category_items_view.html"
+
+
 app = Flask(__name__)
 
 
@@ -42,17 +48,17 @@ catalog = InMemoryCatalog([], [])
 @app.route("/")
 def categories_view():
     return render_template(
-        "layout.html",
+        MAIN_LAYOUT_TEMPLATE,
         categories=catalog.all_categories(),
         items=[],
-        categories_template="categories_template.html",
+        categories_template=CATEGORIES_TEMPLATE,
     )
 
 
 @app.route("/addcategory", methods=["GET", "POST"])
 def new_category():
     if request.method == "GET":
-        return render_template("new_category.html")
+        return render_template(NEW_CATEGORY_TEMPLATE)
     else:
         catalog.add_category(request.form["category_name"])
         return redirect(url_for("categories_view"))
@@ -63,10 +69,10 @@ def category_view(category_name):
     try:
         items = catalog.category_items(category_name)
         return render_template(
-            "layout.html",
+            MAIN_LAYOUT_TEMPLATE,
             items=items,
             categories=catalog.all_categories(),
-            categories_template="categories_template.html",
+            categories_template=CATEGORIES_TEMPLATE,
         )
     except CategoryException as err:
         return abort(404)
