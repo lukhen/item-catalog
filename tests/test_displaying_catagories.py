@@ -1,7 +1,6 @@
 import flaskapp
-from flaskapp import categories_view, InMemoryCatalog
+from flaskapp import InMemoryCatalog
 from unittest.mock import Mock
-from flask import render_template
 import pytest
 
 
@@ -20,12 +19,17 @@ def test_app():
     catalog.all_categories.return_value = categories
     client = flaskapp.app.test_client()
     flaskapp.catalog = catalog
-    response = client.get("/")
-    with flaskapp.app.app_context():
-        assert (
-            render_template("categories_template.html", categories=categories)
-            in response.data.decode()
-        )
+
+    render_template = Mock()
+    render_template.return_value = "irrelevant response output"
+
+    temp = flaskapp.render_template
+    flaskapp.render_template = render_template
+    client.get("/")
+    flaskapp.render_template = temp
+
+    args, kwargs = render_template.call_args
+    assert kwargs["categories"] == categories
 
 
 def test_retrieving_from_in_memory_catalog():
