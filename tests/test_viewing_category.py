@@ -10,7 +10,7 @@ def test_e2e_category_exists():
     """
     Manual test.
     User wants to see all items of 'sailing' category.
-    He enters the site /categories/sailing
+    He enters the site /sailing
     He can see all sailing items in a column.
     """
 
@@ -27,7 +27,7 @@ def test_app_category_exists():
     client = flaskapp.app.test_client()
 
     flaskapp.catalog = catalog
-    response = client.get("/categories/category_name")
+    response = client.get("/category_name")
     with flaskapp.app.app_context():
         assert (
             render_template("category_items_view.html", items=irrelevant_items)
@@ -42,6 +42,6 @@ def test_app_category_not_exists():
     client = flaskapp.app.test_client()
 
     flaskapp.catalog = catalog
-    response = client.get("/categories/not_existing_category")
+    response = client.get("/not_existing_category")
     with flaskapp.app.app_context():
         assert response.status == "404 NOT FOUND"

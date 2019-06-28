@@ -53,7 +53,7 @@ def new_category():
         return redirect(url_for("categories_view"))
 
 
-@app.route("/categories/<category_name>")
+@app.route("/<category_name>")
 def category_view(category_name):
     try:
         items = catalog.category_items(category_name)
