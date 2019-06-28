@@ -21,6 +21,7 @@ def test_app_category_exists():
     catalog.category_items.side_effect = (
         lambda catname: irrelevant_items if catname == "category_name" else None
     )
+    # SMELL: possibly this test checks too much
     catalog.all_categories.return_value = []
 
     client = flaskapp.app.test_client()
