@@ -13,23 +13,36 @@ def test_e2e():
     """
 
 
-def test_app():
-    catalog = Mock()
-    categories = ["Football", "Sailing", "Baseball"]
-    catalog.all_categories.return_value = categories
-    client = flaskapp.app.test_client()
-    flaskapp.catalog = catalog
+@pytest.fixture
+def client():
+    return flaskapp.app.test_client()
 
-    render_template = Mock()
-    render_template.return_value = "irrelevant response output"
 
+@pytest.fixture
+def catalog():
+    temp = flaskapp.catalog
+    flaskapp.catalog = Mock()
+    yield flaskapp.catalog
+    flaskapp.catalog = temp
+
+
+@pytest.fixture
+def render():
     temp = flaskapp.render_template
-    flaskapp.render_template = render_template
-    client.get("/")
+    flaskapp.render_template = Mock()
+    yield flaskapp.render_template
     flaskapp.render_template = temp
 
+
+def test_app(client, catalog, render):
+    categories = ["Football", "Sailing", "Baseball"]
+    catalog.all_categories.return_value = categories
+    render.return_value = "irrelevant response output"
+
+    client.get("/")
+
     assert categories_rendered_with_template(
-        render_template, categories, flaskapp.CATEGORIES_TEMPLATE
+        render, categories, flaskapp.CATEGORIES_TEMPLATE
     )
 
 
