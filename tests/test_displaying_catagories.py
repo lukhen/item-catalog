@@ -28,8 +28,28 @@ def test_app():
     client.get("/")
     flaskapp.render_template = temp
 
-    args, kwargs = render_template.call_args
-    assert kwargs["categories"] == categories
+    assert categories_rendered_with_template(
+        render_template, categories, flaskapp.CATEGORIES_TEMPLATE
+    )
+
+
+def categories_rendered_with_template(
+    render_template_mock, expected_categories, expected_template
+):
+    """
+    Produce True if expected_categories were rendered by 
+    render_template method using expected_template
+    """
+    args, kwargs = render_template_mock.call_args
+    rendered_categories = kwargs.get("categories", None)
+    template = kwargs.get("categories_template", None)
+
+    return (
+        rendered_categories
+        and template
+        and rendered_categories == expected_categories
+        and template == expected_template
+    )
 
 
 def test_retrieving_from_in_memory_catalog():
