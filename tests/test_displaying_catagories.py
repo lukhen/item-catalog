@@ -20,7 +20,7 @@ def test_app(client, catalog, render):
 
     client.get("/")
 
-    assert categories_rendered_with_template(
+    assert _categories_rendered_with_template(
         render, categories, flaskapp.CATEGORIES_TEMPLATE
     )
 
@@ -46,7 +46,7 @@ def test_retrieving_from_in_memory_catalog():
     assert catalog.all_categories() == ["Soccer", "Baseball", "Sailing"]
 
 
-def categories_rendered_with_template(
+def _categories_rendered_with_template(
     render_template_mock, expected_categories, expected_template
 ):
     """
