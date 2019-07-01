@@ -1,5 +1,5 @@
 import flaskapp
-from flaskapp import InMemoryCatalog
+from flaskapp import InMemoryCatalog, render_template
 from unittest.mock import Mock
 import pytest
 
@@ -63,6 +63,13 @@ def categories_rendered_with_template(
         and rendered_categories == expected_categories
         and template == expected_template
     )
+
+
+def test_rendering_one_category():
+    category = "Sailing"
+    with flaskapp.app.app_context():
+        output = render_template(flaskapp.CATEGORIES_TEMPLATE, categories=[category])
+        assert category in output
 
 
 def test_retrieving_from_in_memory_catalog():
