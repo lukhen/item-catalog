@@ -4,6 +4,7 @@ MAIN_LAYOUT_TEMPLATE = "layout.html"
 CATEGORIES_TEMPLATE = "categories_template.html"
 NEW_CATEGORY_TEMPLATE = "new_category.html"
 ITEMS_TEMPLATE = "category_items_view.html"
+ITEM_TEMPLATE = "item_template.html"
 
 
 app = Flask(__name__)
@@ -14,15 +15,18 @@ class CategoryException(Exception):
 
 
 class Item:
-    def __init__(self, name, category):
+    def __init__(self, name, category, description=""):
         self.name = name
         self.category = category
+        self.description = description
 
     def __eq__(self, other):
         return self.name == other.name and self.category == other.category
 
     def __repr__(self):
-        return "<Item: name={}, category={}>".format(self.name, self.category)
+        return "<Item: name={}, category={}, description={}>".format(
+            self.name, self.category, self.description
+        )
 
 
 class InMemoryCatalog:
@@ -77,6 +81,11 @@ def category_view(category_name):
         )
     except CategoryException as err:
         return abort(404)
+
+
+@app.route("/<category_name>/<item_name>")
+def item_view(category_name, item_name):
+    return render_template("", item=catalog.find_item(), item_template=ITEM_TEMPLATE)
 
 
 def main():
