@@ -29,12 +29,10 @@ def test_app_category_exists(client, catalog, render):
     )
 
 
-def test_app_category_not_exists(client):
-    catalog = Mock()
+def test_app_category_not_exists(client, catalog):
     error_message = "::Some irrelevant message::"
     catalog.category_items.side_effect = CategoryException(error_message)
 
-    flaskapp.catalog = catalog
     response = client.get("/not_existing_category")
     with flaskapp.app.app_context():
         assert response.status == "404 NOT FOUND"
