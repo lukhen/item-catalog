@@ -72,6 +72,15 @@ def test_rendering_one_category():
         assert category in output
 
 
+def test_rendering_many_categories():
+    cat1, cat2, cat3 = "Sailing", "Football", "Baseball"
+    with flaskapp.app.app_context():
+        output = render_template(
+            flaskapp.CATEGORIES_TEMPLATE, categories=[cat1, cat2, cat3]
+        )
+        assert cat1 in output and cat2 in output and cat3 in output
+
+
 def test_retrieving_from_in_memory_catalog():
     catalog = InMemoryCatalog(["Soccer", "Baseball", "Sailing"], [])
     assert catalog.all_categories() == ["Soccer", "Baseball", "Sailing"]
