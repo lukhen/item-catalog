@@ -63,6 +63,7 @@ def categories_view():
         categories=catalog.all_categories(),
         items=[],
         left_column_template=CATEGORIES_TEMPLATE,
+        right_column_template=ITEMS_TEMPLATE,
     )
 
 
@@ -94,8 +95,9 @@ def category_view(category_name):
 def item_view(category_name, item_name):
     return render_template(
         MAIN_LAYOUT_TEMPLATE,
-        item=catalog.find_item(),
+        item=catalog.find_item(category_name, item_name),
         right_column_template=ITEM_TEMPLATE,
+        left_column_template=CATEGORIES_TEMPLATE,
     )
 
 
