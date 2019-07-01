@@ -37,7 +37,7 @@ def _item_rendered_with_template(
     """
     args, kwargs = render_template_mock.call_args
     rendered_item = kwargs.get("item", None)
-    template = kwargs.get("item_template", None)
+    template = kwargs.get("right_column_template", None)
 
     return (
         rendered_item

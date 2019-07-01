@@ -55,7 +55,7 @@ def _categories_rendered_with_template(
     """
     args, kwargs = render_template_mock.call_args
     rendered_categories = kwargs.get("categories", None)
-    template = kwargs.get("categories_template", None)
+    template = kwargs.get("left_column_template", None)
 
     return (
         rendered_categories

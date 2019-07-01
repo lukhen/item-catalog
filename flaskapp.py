@@ -55,7 +55,7 @@ def categories_view():
         MAIN_LAYOUT_TEMPLATE,
         categories=catalog.all_categories(),
         items=[],
-        categories_template=CATEGORIES_TEMPLATE,
+        left_column_template=CATEGORIES_TEMPLATE,
     )
 
 
@@ -75,9 +75,9 @@ def category_view(category_name):
         return render_template(
             MAIN_LAYOUT_TEMPLATE,
             items=items,
-            items_template=ITEMS_TEMPLATE,
+            right_column_template=ITEMS_TEMPLATE,
             categories=catalog.all_categories(),
-            categories_template=CATEGORIES_TEMPLATE,
+            left_column_template=CATEGORIES_TEMPLATE,
         )
     except CategoryException as err:
         return abort(404)
@@ -85,7 +85,11 @@ def category_view(category_name):
 
 @app.route("/<category_name>/<item_name>")
 def item_view(category_name, item_name):
-    return render_template("", item=catalog.find_item(), item_template=ITEM_TEMPLATE)
+    return render_template(
+        MAIN_LAYOUT_TEMPLATE,
+        item=catalog.find_item(),
+        right_column_template=ITEM_TEMPLATE,
+    )
 
 
 def main():
