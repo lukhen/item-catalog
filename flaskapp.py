@@ -71,6 +71,7 @@ def category_view(category_name):
         return render_template(
             MAIN_LAYOUT_TEMPLATE,
             items=items,
+            items_template=ITEMS_TEMPLATE,
             categories=catalog.all_categories(),
             categories_template=CATEGORIES_TEMPLATE,
         )
