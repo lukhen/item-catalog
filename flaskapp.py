@@ -21,7 +21,8 @@ class Item:
         self.description = description
 
     def __eq__(self, other):
-        return self.name == other.name and self.category == other.category
+        if isinstance(other, Item):
+            return self.name == other.name and self.category == other.category
 
     def __repr__(self):
         return "<Item: name={}, category={}, description={}>".format(
@@ -46,7 +47,10 @@ class InMemoryCatalog:
         return [item for item in self._items if item.category == category]
 
     def find_item(self, category, name):
-        return Item(name="mainsheet", category="sailing")
+        for item in self._items:
+            if item.name == name and item.category == category:
+                return item
+        return None
 
 
 catalog = InMemoryCatalog([], [])
