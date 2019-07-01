@@ -45,6 +45,9 @@ class InMemoryCatalog:
             raise CategoryException("No such category: {}".format(category))
         return [item for item in self._items if item.category == category]
 
+    def find_item(self, category, name):
+        return Item(name="mainsheet", category="sailing")
+
 
 catalog = InMemoryCatalog([], [])
 
