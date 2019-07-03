@@ -5,7 +5,7 @@ CATEGORIES_TEMPLATE = "categories_template.html"
 NEW_CATEGORY_TEMPLATE = "new_category.html"
 ITEMS_TEMPLATE = "category_items_view.html"
 ITEM_TEMPLATE = "item_template.html"
-
+NEW_ITEM_TEMPLATE = "new_item_template.html"
 
 app = Flask(__name__)
 
@@ -101,6 +101,21 @@ def item_view(category_name, item_name):
         right_column_template=ITEM_TEMPLATE,
         left_column_template=CATEGORIES_TEMPLATE,
     )
+
+
+@app.route("/newitem", methods=["GET", "POST"])
+def new_item():
+    if request.method == "GET":
+        return render_template(NEW_ITEM_TEMPLATE)
+    else:
+        catalog.add_item(
+            Item(
+                request.form["name"],
+                request.form["category"],
+                request.form["description"],
+            )
+        )
+        return redirect(url_for("categories_view"))
 
 
 def main():
