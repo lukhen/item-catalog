@@ -52,6 +52,10 @@ class InMemoryCatalog:
                 return item
         return None
 
+    def add_item(self, item):
+        self._categories.append(item.category)
+        self._items.append(item)
+
 
 catalog = InMemoryCatalog([], [])
 
