@@ -93,6 +93,8 @@ def category_view(category_name):
 
 @app.route("/<category_name>/<item_name>")
 def item_view(category_name, item_name):
+    if not catalog.find_item(category_name, item_name):
+        abort(404)
     return render_template(
         MAIN_LAYOUT_TEMPLATE,
         item=catalog.find_item(category_name, item_name),
