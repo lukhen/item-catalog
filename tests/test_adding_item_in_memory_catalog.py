@@ -1,4 +1,5 @@
-from flaskapp import InMemoryCatalog, Item
+from flaskapp import InMemoryCatalog, Item, ItemException
+import pytest
 
 
 def test_item_not_exists():
@@ -20,3 +21,11 @@ def test_item_not_exists_category_exists():
 
     assert len(catalog.all_categories()) == 1
     assert catalog.find_item(category, name) == Item(name=name, category=category)
+
+
+def test_item_exists():
+    item = Item(name="mainsail", category="sailing")
+    catalog = InMemoryCatalog(categories=["sailing"], items=[item])
+    with pytest.raises(ItemException) as excinfo:
+        catalog.add_item(item)
+        assert "Item [{}] already exists.".format(item) in str(excinfo.value)

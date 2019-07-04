@@ -14,6 +14,10 @@ class CategoryException(Exception):
     ...
 
 
+class ItemException(Exception):
+    ...
+
+
 class Item:
     def __init__(self, name, category, description=""):
         self.name = name
@@ -58,7 +62,12 @@ class InMemoryCatalog:
 
     def add_item(self, item):
         self.add_category(item.category)
+        if self.item_exists(item):
+            raise ItemException("Item [{}] already exists.".format(item))
         self._items.append(item)
+
+    def item_exists(self, item):
+        return item in self._items
 
 
 catalog = InMemoryCatalog([], [])
