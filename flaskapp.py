@@ -39,7 +39,11 @@ class InMemoryCatalog:
         return self._categories
 
     def add_category(self, category):
-        self._categories.append(category)
+        if not self.category_exists(category):
+            self._categories.append(category)
+
+    def category_exists(self, category):
+        return category in self._categories
 
     def category_items(self, category):
         if category not in self._categories:
@@ -53,7 +57,7 @@ class InMemoryCatalog:
         return None
 
     def add_item(self, item):
-        self._categories.append(item.category)
+        self.add_category(item.category)
         self._items.append(item)
 
 
