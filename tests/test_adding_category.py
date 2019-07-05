@@ -2,6 +2,7 @@ import flaskapp
 from flask import render_template
 from unittest.mock import Mock
 import pytest
+from tests import client, catalog
 
 
 @pytest.mark.e2e
@@ -14,8 +15,7 @@ def test_e2e():
     """
 
 
-def test_app_get():
-    client = flaskapp.app.test_client()
+def test_app_get(client):
     response = client.get("/addcategory")
     with flaskapp.app.app_context():
         assert (
@@ -26,10 +26,7 @@ def test_app_get():
         )
 
 
-def test_app_post():
-    client = flaskapp.app.test_client()
-    catalog = Mock()
-    flaskapp.catalog = catalog
+def test_app_post(client, catalog):
     new_category = "Programming"
     client.post("/addcategory", data={"category_name": new_category})
     catalog.add_category.assert_called_with(new_category)
