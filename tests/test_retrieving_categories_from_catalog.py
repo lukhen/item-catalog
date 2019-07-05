@@ -1,6 +1,19 @@
 from flaskapp import InMemoryCatalog
+from abc import ABC, abstractmethod
 
 
-def test_many_categories_in_memory_catalog():
-    catalog = InMemoryCatalog(["Soccer", "Baseball", "Sailing"], [])
-    assert catalog.all_categories() == ["Soccer", "Baseball", "Sailing"]
+class RetrievingCategoriesFromCatalogContract(ABC):
+    def test_many(self):
+        catalog = self.catalog_with(
+            categories=["Soccer", "Baseball", "Sailing"], items=[]
+        )
+        assert catalog.all_categories() == ["Soccer", "Baseball", "Sailing"]
+
+    @abstractmethod
+    def catalog_with(self, categories, items):
+        ...
+
+
+class TestInMemoryCatalog(RetrievingCategoriesFromCatalogContract):
+    def catalog_with(self, categories, items):
+        return InMemoryCatalog(categories=categories, items=items)
