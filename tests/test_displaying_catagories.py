@@ -41,11 +41,6 @@ def test_rendering_many_categories():
         assert cat1 in output and cat2 in output and cat3 in output
 
 
-def test_retrieving_from_in_memory_catalog():
-    catalog = InMemoryCatalog(["Soccer", "Baseball", "Sailing"], [])
-    assert catalog.all_categories() == ["Soccer", "Baseball", "Sailing"]
-
-
 def _categories_rendered_with_template(
     render_template_mock, expected_categories, expected_template
 ):
