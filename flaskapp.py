@@ -94,10 +94,14 @@ class SqlAlchemyCatalog:
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
         self.session.add_all(categories)
+        self.session.add_all(items)
         self.session.commit()
 
     def all_categories(self):
         return [cat.name for cat in self.session.query(SqlAlchemyCategory).all()]
+
+    def find_item(self, category, name):
+        return self.session.query(Item).filter_by(name=name, category=category).first()
 
 
 catalog = InMemoryCatalog([], [])

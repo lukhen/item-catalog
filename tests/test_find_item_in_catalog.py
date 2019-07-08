@@ -1,4 +1,4 @@
-from flaskapp import InMemoryCatalog, Item
+from flaskapp import InMemoryCatalog, Item, SqlAlchemyCatalog, SqlAlchemyCategory
 from abc import ABC, abstractmethod
 
 
@@ -26,3 +26,12 @@ class FindItemInCatalogContract(ABC):
 class TestFindItemInMemoryCatalog(FindItemInCatalogContract):
     def catalog_with(self, categories, items):
         return InMemoryCatalog(categories=categories, items=items)
+
+
+class TestSqlAlchemyCatalog(FindItemInCatalogContract):
+    def catalog_with(self, categories, items):
+        return SqlAlchemyCatalog(
+            categories=[SqlAlchemyCategory(name=category) for category in categories],
+            items=items,
+            db_url="sqlite:///:memory:",
+        )
