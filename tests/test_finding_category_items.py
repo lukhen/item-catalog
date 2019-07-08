@@ -10,7 +10,7 @@ class FindingCategoryItemsInCatalogContract(ABC):
 
     def test_category_exists_zero_items_in_category(self):
         categories = ["Sailing", "Football"]
-        sailing_items = [Item("mainsail", "Sailing")]
+        sailing_items = [Item(name="mainsail", category="Sailing")]
         catalog = self.catalog_with(categories, sailing_items)
 
         assert catalog.category_items("Football") == []
@@ -18,9 +18,9 @@ class FindingCategoryItemsInCatalogContract(ABC):
     def test_category_exists_and_only_one_category(self):
         categories = ["Sailing", "Football"]
         sailing_items = [
-            Item("mainsheet", "Sailing"),
-            Item("mainsail", "Sailing"),
-            Item("rudder", "Sailing"),
+            Item(name="mainsheet", category="Sailing"),
+            Item(name="mainsail", category="Sailing"),
+            Item(name="rudder", category="Sailing"),
         ]
         catalog = self.catalog_with(categories, sailing_items)
         category_name = "Sailing"
@@ -29,35 +29,35 @@ class FindingCategoryItemsInCatalogContract(ABC):
     def test_category_exists_multiple_categories(self):
         categories = ["Sailing", "Football"]
         items = [
-            Item("mainsheet", "Sailing"),
-            Item("mainsail", "Sailing"),
-            Item("rudder", "Sailing"),
-            Item("ball", "Football"),
-            Item("gloves", "Football"),
+            Item(name="mainsheet", category="Sailing"),
+            Item(name="mainsail", category="Sailing"),
+            Item(name="rudder", category="Sailing"),
+            Item(name="ball", category="Football"),
+            Item(name="gloves", category="Football"),
         ]
         catalog = self.catalog_with(categories, items)
         assert catalog.category_items("Sailing") == [
-            Item("mainsheet", "Sailing"),
-            Item("mainsail", "Sailing"),
-            Item("rudder", "Sailing"),
+            Item(name="mainsheet", category="Sailing"),
+            Item(name="mainsail", category="Sailing"),
+            Item(name="rudder", category="Sailing"),
         ]
 
     def test_category_exists_and_the_same_names_in_different_categories(self):
         categories = ["Sailing", "Football"]
         items = [
-            Item("mainsheet", "Sailing"),
-            Item("mainsail", "Sailing"),
-            Item("rudder", "Sailing"),
-            Item("ball", "Football"),
-            Item("gloves", "Football"),
-            Item("gloves", "Sailing"),
+            Item(name="mainsheet", category="Sailing"),
+            Item(name="mainsail", category="Sailing"),
+            Item(name="rudder", category="Sailing"),
+            Item(name="ball", category="Football"),
+            Item(name="gloves", category="Football"),
+            Item(name="gloves", category="Sailing"),
         ]
         catalog = self.catalog_with(categories, items)
         assert catalog.category_items("Sailing") == [
-            Item("mainsheet", "Sailing"),
-            Item("mainsail", "Sailing"),
-            Item("rudder", "Sailing"),
-            Item("gloves", "Sailing"),
+            Item(name="mainsheet", category="Sailing"),
+            Item(name="mainsail", category="Sailing"),
+            Item(name="rudder", category="Sailing"),
+            Item(name="gloves", category="Sailing"),
         ]
 
     def test_category_not_exists(self):

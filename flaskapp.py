@@ -22,22 +22,6 @@ class ItemException(Exception):
     ...
 
 
-class Item:
-    def __init__(self, name, category, description=""):
-        self.name = name
-        self.category = category
-        self.description = description
-
-    def __eq__(self, other):
-        if isinstance(other, Item):
-            return self.name == other.name and self.category == other.category
-
-    def __repr__(self):
-        return "<Item: name={}, category={}, description={}>".format(
-            self.name, self.category, self.description
-        )
-
-
 class InMemoryCatalog:
     def __init__(self, categories=[], items=[]):
         self._categories = categories
@@ -86,12 +70,16 @@ class SqlAlchemyCategory(Base):
         return "<Category: name={}>".format(self.name)
 
 
-class SqlAlchemyItem(Base):
+class Item(Base):
     __tablename__ = "items"
 
     name = Column(String, primary_key=True)
     category = Column(String, primary_key=True)
     description = Column(String)
+
+    def __eq__(self, other):
+        if isinstance(other, Item):
+            return self.name == other.name and self.category == other.category
 
     def __repr__(self):
         return "<Item: name={}, category={}, description={}>".format(
@@ -169,9 +157,9 @@ def new_item():
     else:
         catalog.add_item(
             Item(
-                request.form["name"],
-                request.form["category"],
-                request.form["description"],
+                name=request.form["name"],
+                category=request.form["category"],
+                description=request.form["description"],
             )
         )
         return redirect(url_for("categories_view"))

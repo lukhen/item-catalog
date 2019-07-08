@@ -17,7 +17,7 @@ def test_e2e_category_exists():
 
 
 def test_app_category_exists(client, catalog, render):
-    irrelevant_items = [Item("name", "category_name")]
+    irrelevant_items = [Item(name="name", category="category_name")]
     catalog.category_items.side_effect = (
         lambda catname: irrelevant_items if catname == "category_name" else None
     )

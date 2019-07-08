@@ -30,4 +30,6 @@ def test_app_post(client, catalog):
         data={"name": name, "category": category, "description": description},
     )
 
-    catalog.add_item.assert_called_with(Item(name, category, description))
+    catalog.add_item.assert_called_with(
+        Item(name=name, category=category, description=description)
+    )
