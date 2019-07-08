@@ -1,4 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, create_engine
+from sqlalchemy.orm import sessionmaker
+
 
 MAIN_LAYOUT_TEMPLATE = "layout.html"
 CATEGORIES_TEMPLATE = "categories_template.html"
@@ -68,6 +72,44 @@ class InMemoryCatalog:
 
     def item_exists(self, item):
         return item in self._items
+
+
+Base = declarative_base()
+
+
+class SqlAlchemyCategory(Base):
+    __tablename__ = "categories"
+
+    name = Column(String, primary_key=True)
+
+    def __repr__(self):
+        return "<Category: name={}>".format(self.name)
+
+
+class SqlAlchemyItem(Base):
+    __tablename__ = "items"
+
+    name = Column(String, primary_key=True)
+    category = Column(String, primary_key=True)
+    description = Column(String)
+
+    def __repr__(self):
+        return "<Item: name={}, category={}, description={}>".format(
+            self.name, self.category, self.description
+        )
+
+
+class SqlAlchemyCatalog:
+    def __init__(self, categories=[], items=[], db_url="sqlite:///:memory:"):
+        self.engine = create_engine(db_url)
+        Base.metadata.create_all(self.engine)
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
+        self.session.add_all(categories)
+        self.session.commit()
+
+    def all_categories(self):
+        return [cat.name for cat in self.session.query(SqlAlchemyCategory).all()]
 
 
 catalog = InMemoryCatalog([], [])
