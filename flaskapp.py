@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, abort
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, create_engine
 from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.exc import IntegrityError
 
 MAIN_LAYOUT_TEMPLATE = "layout.html"
 CATEGORIES_TEMPLATE = "categories_template.html"
@@ -111,6 +111,19 @@ class SqlAlchemyCatalog:
             raise CategoryException("No such category: {}".format(category))
         else:
             return self.session.query(Item).filter_by(category=category).all()
+
+    def add_category(self, category):
+        if not self.category_exists(category):
+            self.session.add(SqlAlchemyCategory(name=category))
+            self.session.commit()
+
+    def add_item(self, item):
+        self.add_category(item.category)
+        if self.find_item(item.category, item.name) is not None:
+            raise ItemException("Item [{}] already exists.".format(item))
+        else:
+            self.session.add(item)
+            self.session.commit()
 
 
 catalog = InMemoryCatalog([], [])
