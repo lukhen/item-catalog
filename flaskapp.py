@@ -103,6 +103,15 @@ class SqlAlchemyCatalog:
     def find_item(self, category, name):
         return self.session.query(Item).filter_by(name=name, category=category).first()
 
+    def category_exists(self, category):
+        return self.session.query(SqlAlchemyCategory).filter_by(name=category).first()
+
+    def category_items(self, category):
+        if not self.category_exists(category):
+            raise CategoryException("No such category: {}".format(category))
+        else:
+            return self.session.query(Item).filter_by(category=category).all()
+
 
 catalog = InMemoryCatalog([], [])
 

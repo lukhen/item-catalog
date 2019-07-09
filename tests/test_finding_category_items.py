@@ -1,4 +1,10 @@
-from flaskapp import Item, InMemoryCatalog, CategoryException
+from flaskapp import (
+    Item,
+    InMemoryCatalog,
+    CategoryException,
+    SqlAlchemyCatalog,
+    SqlAlchemyCategory,
+)
 from abc import ABC, abstractmethod
 import pytest
 
@@ -70,3 +76,12 @@ class FindingCategoryItemsInCatalogContract(ABC):
 class TestFindingCategoryItemsInMemoryCatalog(FindingCategoryItemsInCatalogContract):
     def catalog_with(self, categories, items):
         return InMemoryCatalog(categories, items)
+
+
+class TestSqlAlchemyCatalog(FindingCategoryItemsInCatalogContract):
+    def catalog_with(self, categories, items):
+        return SqlAlchemyCatalog(
+            categories=[SqlAlchemyCategory(name=category) for category in categories],
+            items=items,
+            db_url="sqlite:///:memory:",
+        )
