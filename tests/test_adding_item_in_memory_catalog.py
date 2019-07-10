@@ -14,9 +14,10 @@ class AddItemToCatalogContract(ABC):
         name = "mainsheet"
         category = "sailing"
         catalog = self.catalog_with([], [])
-        catalog.add_item(Item(name=name, category=category))
+        item = Item(name=name, category=category)
+        catalog.add_item(item)
 
-        assert catalog.find_item(category, name) == Item(name=name, category=category)
+        assert catalog.find_item(category, name, item.id) == item
         assert category in catalog.all_categories()
 
     def test_item_not_exists_category_exists(self):
@@ -24,10 +25,11 @@ class AddItemToCatalogContract(ABC):
         category = "sailing"
         catalog = self.catalog_with([category], [])
 
-        catalog.add_item(Item(name=name, category=category))
+        item = Item(name=name, category=category)
+        catalog.add_item(item)
 
         assert len(catalog.all_categories()) == 1
-        assert catalog.find_item(category, name) == Item(name=name, category=category)
+        assert catalog.find_item(category, name, item.id) == item
 
     def test_item_exists(self):
         item = Item(name="mainsail", category="sailing")

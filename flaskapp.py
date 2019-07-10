@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, create_engine
+from sqlalchemy import Column, String, Integer, create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 
@@ -42,9 +42,9 @@ class InMemoryCatalog:
             raise CategoryException("No such category: {}".format(category))
         return [item for item in self._items if item.category == category]
 
-    def find_item(self, category, name):
+    def find_item(self, category, name, item_id):
         for item in self._items:
-            if item.name == name and item.category == category:
+            if item.id == item_id:
                 return item
         return None
 
@@ -73,8 +73,9 @@ class SqlAlchemyCategory(Base):
 class Item(Base):
     __tablename__ = "items"
 
-    name = Column(String, primary_key=True)
-    category = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    category = Column(String)
     description = Column(String)
 
     def __eq__(self, other):
@@ -100,8 +101,8 @@ class SqlAlchemyCatalog:
     def all_categories(self):
         return [cat.name for cat in self.session.query(SqlAlchemyCategory).all()]
 
-    def find_item(self, category, name):
-        return self.session.query(Item).filter_by(name=name, category=category).first()
+    def find_item(self, category, name, item_id):
+        return self.session.query(Item).filter_by(id=item_id).first()
 
     def category_exists(self, category):
         return self.session.query(SqlAlchemyCategory).filter_by(name=category).first()
@@ -119,7 +120,7 @@ class SqlAlchemyCatalog:
 
     def add_item(self, item):
         self.add_category(item.category)
-        if self.find_item(item.category, item.name) is not None:
+        if self.find_item(item.category, item.name, item.id) is not None:
             raise ItemException("Item [{}] already exists.".format(item))
         else:
             self.session.add(item)
@@ -127,6 +128,7 @@ class SqlAlchemyCatalog:
 
 
 catalog = InMemoryCatalog([], [])
+catalog = SqlAlchemyCatalog(categories=[], items=[], db_url="sqlite:///catalog.db")
 
 
 @app.route("/")
@@ -164,13 +166,14 @@ def category_view(category_name):
         return abort(404)
 
 
-@app.route("/<category_name>/<item_name>")
-def item_view(category_name, item_name):
-    if not catalog.find_item(category_name, item_name):
+@app.route("/catalog/<item_id>")
+def item_view(item_id):
+    item = catalog.find_item("", "", item_id)
+    if not item:
         abort(404)
     return render_template(
         MAIN_LAYOUT_TEMPLATE,
-        item=catalog.find_item(category_name, item_name),
+        item=item,
         right_column_template=ITEM_TEMPLATE,
         left_column_template=CATEGORIES_TEMPLATE,
     )

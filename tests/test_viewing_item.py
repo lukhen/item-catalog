@@ -23,7 +23,7 @@ def test_app_item_exists(client, catalog, render):
     item = Item(name=name, category=category, description=description)
     catalog.find_item.return_value = item
 
-    client.get("sailing/mainsheet")
+    client.get("catalog/{}".format(item.id))
 
     assert _item_rendered_with_template(render, item, flaskapp.ITEM_TEMPLATE)
 
@@ -35,7 +35,7 @@ def test_app_not_item_exists(client, catalog, render):
     item = Item(name=name, category=category, description=description)
     catalog.find_item.return_value = None
 
-    response = client.get("sailing/mainsheet")
+    response = client.get("catalog/{}".format(item.id))
 
     assert response.status == "404 NOT FOUND"
 

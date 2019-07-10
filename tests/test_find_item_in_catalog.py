@@ -8,19 +8,15 @@ class FindItemInCatalogContract(ABC):
         ...
 
     def test_item_exists_1(self):
-        item = Item(name="mainsheet", category="sailing")
+        item = Item(id=2, name="mainsheet", category="sailing")
         catalog = self.catalog_with(categories=["sailing"], items=[item])
-        assert catalog.find_item("sailing", "mainsheet") == item
+        assert catalog.find_item("sailing", "mainsheet", item.id) == item
 
     def test_item_exists_2(self):
-        items = [
-            Item(name="mainsheet", category="sailing"),
-            Item(name="ball", category="football"),
-        ]
+        item = Item(id=5, name="ball", category="football")
+        items = [Item(name="mainsheet", category="sailing"), item]
         catalog = self.catalog_with(categories=["sailing", "football"], items=items)
-        assert catalog.find_item("football", "ball") == Item(
-            name="ball", category="football"
-        )
+        assert catalog.find_item("football", "ball", item.id) == item
 
 
 class TestFindItemInMemoryCatalog(FindItemInCatalogContract):
