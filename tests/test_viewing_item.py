@@ -44,7 +44,7 @@ def _item_rendered_with_template(
     render_template_mock, expected_item, expected_template
 ):
     """
-    Produce True if expected_categories were rendered by 
+    Produce True if expected_item were rendered by 
     render_template method using expected_template
     """
     args, kwargs = render_template_mock.call_args
