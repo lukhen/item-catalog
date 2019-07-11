@@ -42,7 +42,7 @@ class InMemoryCatalog:
             raise CategoryException("No such category: {}".format(category))
         return [item for item in self._items if item.category == category]
 
-    def find_item(self, category, name, item_id):
+    def find_item(self, item_id):
         for item in self._items:
             if item.id == item_id:
                 return item
@@ -101,7 +101,7 @@ class SqlAlchemyCatalog:
     def all_categories(self):
         return [cat.name for cat in self.session.query(SqlAlchemyCategory).all()]
 
-    def find_item(self, category, name, item_id):
+    def find_item(self, item_id):
         return self.session.query(Item).filter_by(id=item_id).first()
 
     def category_exists(self, category):
@@ -120,7 +120,7 @@ class SqlAlchemyCatalog:
 
     def add_item(self, item):
         self.add_category(item.category)
-        if self.find_item(item.category, item.name, item.id) is not None:
+        if self.find_item(item.id) is not None:
             raise ItemException("Item [{}] already exists.".format(item))
         else:
             self.session.add(item)
@@ -168,7 +168,7 @@ def category_view(category_name):
 
 @app.route("/catalog/<item_id>")
 def item_view(item_id):
-    item = catalog.find_item("", "", item_id)
+    item = catalog.find_item(item_id)
     if not item:
         abort(404)
     return render_template(

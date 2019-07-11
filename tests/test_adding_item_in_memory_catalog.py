@@ -17,7 +17,7 @@ class AddItemToCatalogContract(ABC):
         item = Item(name=name, category=category)
         catalog.add_item(item)
 
-        assert catalog.find_item(category, name, item.id) == item
+        assert catalog.find_item(item.id) == item
         assert category in catalog.all_categories()
 
     def test_item_not_exists_category_exists(self):
@@ -29,7 +29,7 @@ class AddItemToCatalogContract(ABC):
         catalog.add_item(item)
 
         assert len(catalog.all_categories()) == 1
-        assert catalog.find_item(category, name, item.id) == item
+        assert catalog.find_item(item.id) == item
 
     def test_item_exists(self):
         item = Item(name="mainsail", category="sailing")
