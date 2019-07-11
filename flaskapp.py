@@ -194,6 +194,21 @@ def new_item():
         return redirect(url_for("categories_view"))
 
 
+@app.route("/catalog/<item_id>/edit", methods=["GET", "POST"])
+def edit_item(item_id):
+    item = catalog.find_item(item_id)
+    if request.method == "GET":
+        return render_template(NEW_ITEM_TEMPLATE, item=item)
+    else:
+        catalog.edit_item(
+            item_id,
+            request.form["name"],
+            request.form["category"],
+            request.form["description"],
+        )
+        return ""
+
+
 def main():
     app.run(host="0.0.0.0", port=5000)
 
