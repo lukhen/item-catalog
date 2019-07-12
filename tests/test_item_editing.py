@@ -1,5 +1,5 @@
 import flaskapp
-from flaskapp import Item
+from flaskapp import Item, SqlAlchemyCatalog
 import pytest
 from tests import client, render, catalog
 
@@ -43,3 +43,19 @@ def test_app_post(client, catalog):
     )
 
     catalog.edit_item.assert_called_with("123", new_name, new_category, new_description)
+
+
+def test_sql_alchemy_catalog():
+    item = Item(name="irrelevant name", category="irrelevant category")
+    catalog = SqlAlchemyCatalog(items=[item])
+    new_name = "new name"
+    new_category = "new category"
+    new_description = "new description"
+
+    catalog.edit_item(item.id, new_name, new_category, new_description)
+
+    assert (
+        item.name == new_name
+        and item.category == new_category
+        and item.description == new_description
+    )

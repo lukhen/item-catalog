@@ -126,6 +126,14 @@ class SqlAlchemyCatalog:
             self.session.add(item)
             self.session.commit()
 
+    def edit_item(self, item_id, new_name, new_category, new_description):
+        item = self.find_item(item_id)
+        if item:
+            item.name = new_name
+            item.category = new_category
+            item.description = new_description
+        self.session.commit()
+
 
 catalog = InMemoryCatalog([], [])
 catalog = SqlAlchemyCatalog(categories=[], items=[], db_url="sqlite:///catalog.db")
