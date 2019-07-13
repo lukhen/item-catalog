@@ -10,6 +10,7 @@ NEW_CATEGORY_TEMPLATE = "new_category.html"
 ITEMS_TEMPLATE = "category_items_view.html"
 ITEM_TEMPLATE = "item_template.html"
 NEW_ITEM_TEMPLATE = "new_item_template.html"
+DELETE_ITEM_TEMPLATE = "delete_item_template.html"
 
 app = Flask(__name__)
 
@@ -215,6 +216,11 @@ def edit_item(item_id):
             request.form["description"],
         )
         return ""
+
+
+@app.route("/catalog/<item_id>/delete")
+def delete_item(item_id):
+    return render_template(DELETE_ITEM_TEMPLATE, item=catalog.find_item(item_id))
 
 
 def main():
