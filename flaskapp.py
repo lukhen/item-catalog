@@ -218,9 +218,13 @@ def edit_item(item_id):
         return ""
 
 
-@app.route("/catalog/<item_id>/delete")
+@app.route("/catalog/<item_id>/delete", methods=["GET", "POST"])
 def delete_item(item_id):
-    return render_template(DELETE_ITEM_TEMPLATE, item=catalog.find_item(item_id))
+    item = catalog.find_item(item_id)
+    if request.method == "GET":
+        return render_template(DELETE_ITEM_TEMPLATE, item=item)
+    else:
+        catalog.delete_item(item)
 
 
 def main():
