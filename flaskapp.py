@@ -135,6 +135,10 @@ class SqlAlchemyCatalog:
             item.description = new_description
         self.session.commit()
 
+    def delete_item(self, item):
+        self.session.delete(item)
+        self.session.commit()
+
 
 catalog = InMemoryCatalog([], [])
 catalog = SqlAlchemyCatalog(categories=[], items=[], db_url="sqlite:///catalog.db")
