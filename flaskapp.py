@@ -18,7 +18,6 @@ DELETE_ITEM_TEMPLATE = "delete_item_template.html"
 app = Flask(__name__)
 
 
-catalog = InMemoryCatalog([], [])
 catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db")
 
 
