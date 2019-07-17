@@ -1,4 +1,4 @@
-from flaskapp import Item
+from models import Item
 from flask import render_template
 import flaskapp
 

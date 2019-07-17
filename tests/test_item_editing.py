@@ -1,5 +1,5 @@
 import flaskapp
-from flaskapp import Item, SqlAlchemyCatalog
+from models import Item, SqlAlchemyCatalog
 import pytest
 from tests import client, render, catalog
 

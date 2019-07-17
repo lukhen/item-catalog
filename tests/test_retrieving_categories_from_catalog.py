@@ -1,4 +1,4 @@
-from flaskapp import InMemoryCatalog, SqlAlchemyCatalog, SqlAlchemyCategory
+from models import InMemoryCatalog, SqlAlchemyCatalog, SqlAlchemyCategory
 from abc import ABC, abstractmethod
 
 

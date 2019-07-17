@@ -1,6 +1,6 @@
 from tests import render, catalog, client
 import flaskapp
-from flaskapp import Item
+from models import Item
 
 
 def test_e2e():

@@ -1,4 +1,4 @@
-from flaskapp import Item
+from models import Item
 
 
 def test_equal():

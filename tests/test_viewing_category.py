@@ -1,7 +1,7 @@
 import pytest
 import flaskapp
 from flask import render_template
-from flaskapp import Item, CategoryException
+from models import Item, CategoryException
 from unittest.mock import Mock
 from tests import client, catalog, render
 

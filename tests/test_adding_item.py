@@ -1,5 +1,5 @@
 import flaskapp
-from flaskapp import Item
+from models import Item
 import pytest
 from tests import client, render, catalog
 

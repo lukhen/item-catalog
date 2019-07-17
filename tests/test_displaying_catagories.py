@@ -1,5 +1,6 @@
 import flaskapp
-from flaskapp import InMemoryCatalog, render_template
+from models import InMemoryCatalog
+from flaskapp import render_template
 import pytest
 from tests import client, catalog, render
 

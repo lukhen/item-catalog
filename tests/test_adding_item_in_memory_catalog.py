@@ -1,4 +1,4 @@
-from flaskapp import (
+from models import (
     InMemoryCatalog,
     Item,
     ItemException,
