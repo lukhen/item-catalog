@@ -26,7 +26,7 @@ class TestFindItemInMemoryCatalog(FindItemInCatalogContract):
 
 class TestSqlAlchemyCatalog(FindItemInCatalogContract):
     def catalog_with(self, categories, items):
-        return SqlAlchemyCatalog(
+        return SqlAlchemyCatalog.create_with(
             categories=[SqlAlchemyCategory(name=category) for category in categories],
             items=items,
             db_url="sqlite:///:memory:",

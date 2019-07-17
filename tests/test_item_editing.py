@@ -47,7 +47,7 @@ def test_app_post(client, catalog):
 
 def test_sql_alchemy_catalog():
     item = Item(name="irrelevant name", category="irrelevant category")
-    catalog = SqlAlchemyCatalog(items=[item])
+    catalog = SqlAlchemyCatalog.create_with(items=[item])
     new_name = "new name"
     new_category = "new category"
     new_description = "new description"

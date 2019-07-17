@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 
 catalog = InMemoryCatalog([], [])
-catalog = SqlAlchemyCatalog(categories=[], items=[], db_url="sqlite:///catalog.db")
+catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db")
 
 
 @app.route("/")

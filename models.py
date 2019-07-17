@@ -45,12 +45,17 @@ class Item(Base):
 class SqlAlchemyCatalog:
     def __init__(self, categories=[], items=[], db_url="sqlite:///:memory:"):
         self.engine = create_engine(db_url)
-        Base.metadata.create_all(self.engine)
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
-        self.session.add_all(categories)
-        self.session.add_all(items)
-        self.session.commit()
+
+    @staticmethod
+    def create_with(categories=[], items=[], db_url="sqlite:///:memory:"):
+        db = SqlAlchemyCatalog(db_url)
+        Base.metadata.create_all(db.engine)
+        db.session.add_all(categories)
+        db.session.add_all(items)
+        db.session.commit()
+        return db
 
     def all_categories(self):
         return [cat.name for cat in self.session.query(SqlAlchemyCategory).all()]
