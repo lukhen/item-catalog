@@ -6,6 +6,8 @@ from models import (
     SqlAlchemyCatalog,
     InMemoryCatalog,
 )
+import click
+from dotenv import load_dotenv
 
 MAIN_LAYOUT_TEMPLATE = "layout.html"
 CATEGORIES_TEMPLATE = "categories_template.html"
@@ -15,10 +17,22 @@ ITEM_TEMPLATE = "item_template.html"
 NEW_ITEM_TEMPLATE = "new_item_template.html"
 DELETE_ITEM_TEMPLATE = "delete_item_template.html"
 
-app = Flask(__name__)
 
+app = Flask(__name__)
+load_dotenv()
 
 catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db")
+
+
+@click.command(name="createdb")
+def create_db():
+    catalog = SqlAlchemyCatalog.create_with(
+        items=[], categories=[], db_url="sqlite:///catalog.db"
+    )
+    print("Database tables created")
+
+
+app.cli.add_command(create_db)
 
 
 @app.route("/")

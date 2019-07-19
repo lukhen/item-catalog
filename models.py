@@ -51,7 +51,12 @@ class SqlAlchemyCatalog:
     @staticmethod
     def create_with(categories=[], items=[], db_url="sqlite:///:memory:"):
         db = SqlAlchemyCatalog(db_url)
-        Base.metadata.create_all(db.engine)
+        engine = create_engine(db_url)
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        db.engine = engine
+        db.session = session
         db.session.add_all(categories)
         db.session.add_all(items)
         db.session.commit()
