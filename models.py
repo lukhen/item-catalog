@@ -2,6 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Integer, create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+from flask_login import UserMixin
 
 
 class CategoryException(Exception):
@@ -13,6 +14,13 @@ class ItemException(Exception):
 
 
 Base = declarative_base()
+
+
+class User(UserMixin, Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String(256), unique=True)
 
 
 class SqlAlchemyCategory(Base):

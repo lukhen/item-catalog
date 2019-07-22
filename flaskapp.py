@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
+from flask_login import LoginManager
 from models import (
     CategoryException,
     ItemException,
@@ -19,6 +20,9 @@ DELETE_ITEM_TEMPLATE = "delete_item_template.html"
 
 
 app = Flask(__name__)
+app.secret_key = "secret"
+login_manager = LoginManager()
+login_manager.init_app(app)
 load_dotenv()
 
 catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db")
