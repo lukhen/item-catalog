@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user, login_user, login_required
 from models import (
     CategoryException,
     ItemException,
     Item,
     SqlAlchemyCatalog,
     InMemoryCatalog,
+    User,
 )
 import click
 from dotenv import load_dotenv
@@ -37,6 +38,11 @@ def create_db():
 
 
 app.cli.add_command(create_db)
+
+
+@app.route("/login")
+def login():
+    return "login"
 
 
 @app.route("/")
@@ -90,6 +96,8 @@ def item_view(item_id):
 @app.route("/newitem", methods=["GET", "POST"])
 def new_item():
     if request.method == "GET":
+        if not current_user.is_authenticated:
+            return redirect(url_for("login"))
         return render_template(NEW_ITEM_TEMPLATE)
     else:
         catalog.add_item(
