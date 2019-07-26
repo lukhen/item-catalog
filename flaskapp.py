@@ -23,6 +23,7 @@ DELETE_ITEM_TEMPLATE = "delete_item_template.html"
 app = Flask(__name__)
 app.secret_key = "secret"
 login_manager = LoginManager()
+login_manager.login_view = "login"
 login_manager.init_app(app)
 load_dotenv()
 
@@ -43,6 +44,11 @@ app.cli.add_command(create_db)
 @app.route("/login")
 def login():
     return "login"
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return catalog.find_user(user_id)
 
 
 @app.route("/")
@@ -94,10 +100,9 @@ def item_view(item_id):
 
 
 @app.route("/newitem", methods=["GET", "POST"])
+@login_required
 def new_item():
     if request.method == "GET":
-        if not current_user.is_authenticated:
-            return redirect(url_for("login"))
         return render_template(NEW_ITEM_TEMPLATE)
     else:
         catalog.add_item(

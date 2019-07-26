@@ -110,6 +110,9 @@ class SqlAlchemyCatalog:
         self.session.delete(item)
         self.session.commit()
 
+    def find_user(self, user_id):
+        return self.session.query(User).filter_by(id=user_id).first()
+
 
 class InMemoryCatalog:
     def __init__(self, categories=[], items=[]):

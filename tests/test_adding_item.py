@@ -17,15 +17,11 @@ def test_e2e():
 
 
 def test_app_get_request_while_user_logged_in(client, render, current_user_mock):
-    current_user_mock.is_authenticated = True
-    client.get("/newitem")
-    assert flaskapp.NEW_ITEM_TEMPLATE in render.call_args[0]
-
-
-def test_app_get_request_while_user_not_logged_in(client, redirect_mock):
     with flaskapp.app.test_request_context():
+        flaskapp.app.config["LOGIN_DISABLED"] = True
+        flaskapp.login_manager.init_app(flaskapp.app)
         client.get("/newitem")
-        redirect_mock.assert_called_once_with(url_for("login"))
+        assert flaskapp.NEW_ITEM_TEMPLATE in render.call_args[0]
 
 
 def test_app_post(client, catalog):
