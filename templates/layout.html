@@ -1,6 +1,15 @@
 <!doctype html>
 <html>
   <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <div>{% include left_column_template %}</div>
     <div>{% include right_column_template %}</div>
   </body>

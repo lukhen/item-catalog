@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, url_for, abort, flash
 from flask_login import LoginManager, current_user, login_user, login_required
 from models import (
     CategoryException,
