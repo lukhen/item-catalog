@@ -1,7 +1,8 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Integer, create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import ForeignKey
 from flask_login import UserMixin
 
 
@@ -19,8 +20,8 @@ Base = declarative_base()
 class User(UserMixin, Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    email = Column(String(256), unique=True)
+    id = Column(String, primary_key=True)
+    name = Column(String(256), unique=True)
 
 
 class SqlAlchemyCategory(Base):
@@ -39,6 +40,7 @@ class Item(Base):
     name = Column(String)
     category = Column(String)
     description = Column(String)
+    user_id = Column(String)
 
     def __eq__(self, other):
         if isinstance(other, Item):

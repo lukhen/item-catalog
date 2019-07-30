@@ -1,5 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, abort, flash
-from flask_login import LoginManager, current_user, login_user, login_required
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_user,
+    login_required,
+    logout_user,
+)
 from models import (
     CategoryException,
     ItemException,
@@ -10,6 +16,7 @@ from models import (
 )
 import click
 from dotenv import load_dotenv
+from flask_dance.contrib.google import make_google_blueprint, google
 
 MAIN_LAYOUT_TEMPLATE = "layout.html"
 CATEGORIES_TEMPLATE = "categories_template.html"
@@ -27,6 +34,12 @@ login_manager.login_view = "login"
 login_manager.init_app(app)
 load_dotenv()
 
+blueprint = make_google_blueprint(
+    client_id="850148895071-7kitc1lgf03ooem3asrpngj8g07u0k33.apps.googleusercontent.com",
+    client_secret="z4dGFMjc0pjhL2W1pWqV2oeM",
+)
+app.register_blueprint(blueprint, url_prefix="/login")
+
 catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db")
 
 
@@ -43,16 +56,39 @@ app.cli.add_command(create_db)
 
 @app.route("/login")
 def login():
-    return "login"
+    print(google.authorized)
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    resp = google.get("/oauth2/v1/userinfo")
+    print(google)
+    assert resp.ok
+    print(resp.json())
+
+    login_user(User(id=resp.json()["id"], name=resp.json()["name"]))
+    return "You are @{login} on Google".format(login=resp.json()["name"])
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return catalog.find_user(user_id)
+    if google.authorized:
+        resp = google.get("/oauth2/v1/userinfo")
+        assert resp.ok
+        user = User(id=resp.json()["id"], name=resp.json()["name"])
+        if user.id == user_id:
+            return user
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out.")
+    return redirect(url_for("categories_view"))
 
 
 @app.route("/")
 def categories_view():
+
     return render_template(
         MAIN_LAYOUT_TEMPLATE,
         categories=catalog.all_categories(),
@@ -110,14 +146,24 @@ def new_item():
                 name=request.form["name"],
                 category=request.form["category"],
                 description=request.form["description"],
+                user_id=current_user.id,
             )
         )
         return redirect(url_for("categories_view"))
 
 
 @app.route("/catalog/<item_id>/edit", methods=["GET", "POST"])
+@login_required
 def edit_item(item_id):
     item = catalog.find_item(item_id)
+    item = catalog.find_item(item_id)
+    if item.user_id != current_user.id:
+        flash(
+            "You are not authorised to edit this item. {}, {}".format(
+                item.user_id, current_user.id
+            )
+        )
+        return redirect(url_for("categories_view"))
     if request.method == "GET":
         return render_template(NEW_ITEM_TEMPLATE, item=item)
     else:
@@ -127,16 +173,27 @@ def edit_item(item_id):
             request.form["category"],
             request.form["description"],
         )
-        return ""
+        flash("You have edited 1 item.")
+        return redirect(url_for("categories_view"))
 
 
 @app.route("/catalog/<item_id>/delete", methods=["GET", "POST"])
+@login_required
 def delete_item(item_id):
     item = catalog.find_item(item_id)
+    if item.user_id != current_user.id:
+        flash(
+            "You are not authorised to delete this item. {}, {}".format(
+                item.user_id, current_user.id
+            )
+        )
+        return redirect(url_for("categories_view"))
     if request.method == "GET":
         return render_template(DELETE_ITEM_TEMPLATE, item=item)
     else:
         catalog.delete_item(item)
+        flash("You have deleted 1 item.")
+        return redirect(url_for("categories_view"))
 
 
 def main():
