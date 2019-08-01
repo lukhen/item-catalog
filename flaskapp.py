@@ -131,13 +131,7 @@ def item_view(item_id):
     item = catalog.find_item(item_id)
     if not item:
         abort(404)
-    return render_template(
-        ITEM_TEMPLATE,
-        item=item,
-        right_column_template=ITEM_TEMPLATE,
-        left_column_template=CATEGORIES_TEMPLATE,
-        title_template=TITLE_TEMPLATE,
-    )
+    return render_template(ITEM_TEMPLATE, item=item, title_template=TITLE_TEMPLATE)
 
 
 @app.route("/newitem", methods=["GET", "POST"])
