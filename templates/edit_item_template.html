@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+   <body>
+     <form action="{{url_for('edit_item', item_id=item.id)}}" method="post">
+       <input type='text' size='30' name='name' value="{{item.name}}">
+       <input type='text' size='30' name='category' value="{{item.category}}">
+       <input type='text' size='30' name='description' value="{{item.description}}">
+       <input type='submit' value='Edit'>
+     </form>
+   </body>
+</html>

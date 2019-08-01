@@ -25,6 +25,7 @@ ITEMS_TEMPLATE = "category_items_view.html"
 ITEM_TEMPLATE = "item_template.html"
 NEW_ITEM_TEMPLATE = "new_item_template.html"
 DELETE_ITEM_TEMPLATE = "delete_item_template.html"
+EDIT_ITEM_TEMPLATE = "edit_item_template.html"
 TITLE_TEMPLATE = "title_template.html"
 
 app = Flask(__name__)
@@ -160,7 +161,6 @@ def new_item():
 @login_required
 def edit_item(item_id):
     item = catalog.find_item(item_id)
-    item = catalog.find_item(item_id)
     if item.user_id != current_user.id:
         flash(
             "You are not authorised to edit this item. {}, {}".format(
@@ -169,7 +169,7 @@ def edit_item(item_id):
         )
         return redirect(url_for("categories_view"))
     if request.method == "GET":
-        return render_template(NEW_ITEM_TEMPLATE, item=item)
+        return render_template(EDIT_ITEM_TEMPLATE, item=item)
     else:
         catalog.edit_item(
             item_id,
