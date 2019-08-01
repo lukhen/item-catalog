@@ -18,14 +18,14 @@ import click
 from dotenv import load_dotenv
 from flask_dance.contrib.google import make_google_blueprint, google
 
-MAIN_LAYOUT_TEMPLATE = "layout.html"
+TWO_COLUMNS_TEMPLATE = "two_columns_template.html"
 CATEGORIES_TEMPLATE = "categories_template.html"
 NEW_CATEGORY_TEMPLATE = "new_category.html"
 ITEMS_TEMPLATE = "category_items_view.html"
 ITEM_TEMPLATE = "item_template.html"
 NEW_ITEM_TEMPLATE = "new_item_template.html"
 DELETE_ITEM_TEMPLATE = "delete_item_template.html"
-
+TITLE_TEMPLATE = "title_template.html"
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -90,11 +90,12 @@ def logout():
 def categories_view():
 
     return render_template(
-        MAIN_LAYOUT_TEMPLATE,
+        TWO_COLUMNS_TEMPLATE,
         categories=catalog.all_categories(),
         items=[],
         left_column_template=CATEGORIES_TEMPLATE,
         right_column_template=ITEMS_TEMPLATE,
+        title_template=TITLE_TEMPLATE,
     )
 
 
@@ -111,12 +112,14 @@ def new_category():
 def category_view(category_name):
     try:
         items = catalog.category_items(category_name)
+        print(catalog.all_categories())
         return render_template(
-            MAIN_LAYOUT_TEMPLATE,
+            TWO_COLUMNS_TEMPLATE,
             items=items,
             right_column_template=ITEMS_TEMPLATE,
             categories=catalog.all_categories(),
             left_column_template=CATEGORIES_TEMPLATE,
+            title_template=TITLE_TEMPLATE,
         )
     except CategoryException as err:
         return abort(404)
@@ -128,10 +131,11 @@ def item_view(item_id):
     if not item:
         abort(404)
     return render_template(
-        MAIN_LAYOUT_TEMPLATE,
+        ITEM_TEMPLATE,
         item=item,
         right_column_template=ITEM_TEMPLATE,
         left_column_template=CATEGORIES_TEMPLATE,
+        title_template=TITLE_TEMPLATE,
     )
 
 

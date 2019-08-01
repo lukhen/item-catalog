@@ -1,0 +1,9 @@
+{% extends 'main_layout.html' %}
+{% block content %}
+<p><a href="{{url_for('new_item')}}">Add Item</a></p>
+    <div class="row">
+      <div class="column">{% include left_column_template %}</div>
+      <div class="column">{% include right_column_template %}</div>
+    </div>
+{% endblock %}    
+
