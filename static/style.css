@@ -1,0 +1,25 @@
+.header {
+    background-color: #1922;
+    padding: 20px;
+}
+
+
+.header div {
+    float: left;
+}
+
+.title {
+    width: 50%;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 15px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
