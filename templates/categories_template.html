@@ -1,4 +1,5 @@
+<h2>Categories</h2>
 {% for category in categories %}
-{{ category }}
+<a href="{{url_for('category_view', category_name=category)}}">{{ category }}</a>
 <br>
 {% endfor %}

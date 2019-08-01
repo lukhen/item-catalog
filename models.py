@@ -73,13 +73,13 @@ class SqlAlchemyCatalog:
         return db
 
     def all_categories(self):
-        return [cat.name for cat in self.session.query(SqlAlchemyCategory).all()]
+        return [cat[0] for cat in self.session.query(Item.category).distinct()]
 
     def find_item(self, item_id):
         return self.session.query(Item).filter_by(id=item_id).first()
 
     def category_exists(self, category):
-        return self.session.query(SqlAlchemyCategory).filter_by(name=category).first()
+        return category in self.all_categories()
 
     def category_items(self, category):
         if not self.category_exists(category):
@@ -87,13 +87,7 @@ class SqlAlchemyCatalog:
         else:
             return self.session.query(Item).filter_by(category=category).all()
 
-    def add_category(self, category):
-        if not self.category_exists(category):
-            self.session.add(SqlAlchemyCategory(name=category))
-            self.session.commit()
-
     def add_item(self, item):
-        self.add_category(item.category)
         if self.find_item(item.id) is not None:
             raise ItemException("Item [{}] already exists.".format(item))
         else:
@@ -111,9 +105,6 @@ class SqlAlchemyCatalog:
     def delete_item(self, item):
         self.session.delete(item)
         self.session.commit()
-
-    def find_user(self, user_id):
-        return self.session.query(User).filter_by(id=user_id).first()
 
 
 class InMemoryCatalog:

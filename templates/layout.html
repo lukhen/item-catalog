@@ -1,18 +1,8 @@
-<!doctype html>
-<html>
-  <body>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    <p>{{current_user.name}}</p>
+{% extends 'main_layout.html' %}
+{% block content %}
+    <div class="row">
+      <div class="column"><h2>Categories</h2>{% include left_column_template %}</div>
+      <div class="column">{% include right_column_template %}</div>
+    </div>
+{% endblock %}    
 
-    <div>{% include left_column_template %}</div>
-    <div>{% include right_column_template %}</div>
-  </body>
-</html>
