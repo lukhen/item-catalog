@@ -5,12 +5,12 @@
 4. Run command: source ./.venv/bin/activate
 5. Run command: pip install flask flask-login flask-dance sqlalchemy python-dotenv
 6. Create .env file with following lines:
-  FLASK_APP=flaskapp
-  FLASK_SECRET_KEY=supersecret
-  GOOGLE_OAUTH_CLIENT_ID=850148895071-7kitc1lgf03ooem3asrpngj8g07u0k33.apps.googleusercontent.com
-  GOOGLE_OAUTH_CLIENT_SECRET=z4dGFMjc0pjhL2W1pWqV2oeM
-  OAUTHLIB_RELAX_TOKEN_SCOPE=true
-  OAUTHLIB_INSECURE_TRANSPORT=true
+  - FLASK_APP=flaskapp
+  - FLASK_SECRET_KEY=supersecret
+  - GOOGLE_OAUTH_CLIENT_ID=850148895071-7kitc1lgf03ooem3asrpngj8g07u0k33.apps.googleusercontent.com
+  - GOOGLE_OAUTH_CLIENT_SECRET=z4dGFMjc0pjhL2W1pWqV2oeM
+  - OAUTHLIB_RELAX_TOKEN_SCOPE=true
+  - OAUTHLIB_INSECURE_TRANSPORT=true
 7. Run command: flask createdb
 8. Run command: flask run
 9. Visit localhost:5000 in the browser.
