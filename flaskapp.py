@@ -107,6 +107,7 @@ def categories_view():
         items=catalog.recent_items(3),
         left_column_template=CATEGORIES_TEMPLATE,
         right_column_template=ITEMS_TEMPLATE,
+        right_column_title="Recent Items",
         title_template=TITLE_TEMPLATE,
     )
 
