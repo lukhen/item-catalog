@@ -4,6 +4,12 @@
     height: 60px;
 }
 
+.content {
+    width: 50%;
+    margin: auto;
+    padding: 10px;
+}
+
 
 .header div {
     float: left;

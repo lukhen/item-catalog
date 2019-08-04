@@ -173,7 +173,9 @@ def edit_item(item_id):
         )
         return redirect(url_for("categories_view"))
     if request.method == "GET":
-        return render_template(EDIT_ITEM_TEMPLATE, item=item)
+        return render_template(
+            EDIT_ITEM_TEMPLATE, item=item, categories=catalog.all_categories()
+        )
     else:
         catalog.edit_item(
             item_id,
