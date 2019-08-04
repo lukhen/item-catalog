@@ -1,16 +1,22 @@
-<!doctype html>
-<html>
-   <body>
-     <form action="{{url_for('edit_item', item_id=item.id)}}" method="post">
-       <input type='text' size='30' name='name' value="{{item.name}}">
-       <input type='text' size='30' name='category' list="categories" autocomplete="off" value="{{item.category}}">
-           <datalist id="categories">
-	     {% for category in categories %}
-	     <option value="{{category}}">
-	     {% endfor %}
-	   </datalist>
-       <input type='text' size='30' name='description' value="{{item.description}}">
-       <input type='submit' value='Edit'>
-     </form>
-   </body>
-</html>
+{% extends 'main_layout.html' %}
+{% block content %}
+<h2>Edit item:</h2>
+<form action="{{url_for('edit_item', item_id=item.id)}}" method="post">
+  Name: <br>
+  <input type='text' size='30' name='name' value="{{item.name}}">
+  <br>
+  Category:<br>
+  <input type='text' size='30' name='category' list="categories" autocomplete="off" value="{{item.category}}">
+  <datalist id="categories">
+    {% for category in categories %}
+    <option value="{{category}}">
+      {% endfor %}
+  </datalist>
+  <br>
+  Description:<br>
+  <textarea cols='60' rows='10' name='description'>{{item.description}}</textarea>
+  <br>
+  <input type='submit' value='Edit'>
+</form>
+{%  endblock %}
+

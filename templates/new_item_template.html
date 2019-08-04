@@ -1,16 +1,22 @@
-<!doctype html>
-<html>
-   <body>
-     <form action="/newitem" method="post">
-       <input type='text' size='30' name='name'>
-       <input type='text' size='30' name='category' list="categories" autocomplete="off">
-           <datalist id="categories">
-	     {% for category in categories %}
-	     <option value="{{category}}">
-	     {% endfor %}
-	   </datalist>
-       <input type='text' size='30' name='description'>
-       <input type='submit' value='Add'>
-      </form>
-   </body>
-</html>
+{% extends 'main_layout.html' %}
+{% block content %}
+<h2>Add new item:</h2>
+<form action="/newitem" method="post">
+  Name: <br>
+  <input type='text' size='30' name='name'>
+  <br>
+  Category:<br>
+  <input type='text' size='30' name='category' list="categories" autocomplete="off">
+  <datalist id="categories">
+    {% for category in categories %}
+    <option value="{{category}}">
+      {% endfor %}
+  </datalist>
+  <br>
+  Description:<br>
+  <textarea cols='60' rows='10' name='description'></textarea>
+  <br>
+  <input type='submit' value='Add'>
+</form>
+{%  endblock %}
+

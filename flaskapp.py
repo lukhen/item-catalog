@@ -15,14 +15,7 @@ from flask_login import (
     login_required,
     logout_user,
 )
-from models import (
-    CategoryException,
-    ItemException,
-    Item,
-    SqlAlchemyCatalog,
-    InMemoryCatalog,
-    User,
-)
+from models import CategoryException, ItemException, Item, SqlAlchemyCatalog, User
 import click
 from dotenv import load_dotenv
 from flask_dance.contrib.google import make_google_blueprint, google
@@ -137,7 +130,11 @@ def item_view(item_id):
 @login_required
 def new_item():
     if request.method == "GET":
-        return render_template(NEW_ITEM_TEMPLATE, categories=catalog.all_categories())
+        return render_template(
+            NEW_ITEM_TEMPLATE,
+            categories=catalog.all_categories(),
+            title_template=TITLE_TEMPLATE,
+        )
     else:
         catalog.add_item(
             Item(
@@ -163,7 +160,10 @@ def edit_item(item_id):
         return redirect(url_for("categories_view"))
     if request.method == "GET":
         return render_template(
-            EDIT_ITEM_TEMPLATE, item=item, categories=catalog.all_categories()
+            EDIT_ITEM_TEMPLATE,
+            item=item,
+            categories=catalog.all_categories(),
+            title_template=TITLE_TEMPLATE,
         )
     else:
         catalog.edit_item(

@@ -25,15 +25,6 @@ class User(UserMixin, Base):
     name = Column(String(256), unique=True)
 
 
-class SqlAlchemyCategory(Base):
-    __tablename__ = "categories"
-
-    name = Column(String, primary_key=True)
-
-    def __repr__(self):
-        return "<Category: name={}>".format(self.name)
-
-
 class Item(Base):
     __tablename__ = "items"
 
@@ -123,39 +114,3 @@ class SqlAlchemyCatalog:
 
     def all_items(self):
         return self.session.query(Item).all()
-
-
-class InMemoryCatalog:
-    def __init__(self, categories=[], items=[]):
-        self._categories = categories
-        self._items = items
-
-    def all_categories(self):
-        return self._categories
-
-    def add_category(self, category):
-        if not self.category_exists(category):
-            self._categories.append(category)
-
-    def category_exists(self, category):
-        return category in self._categories
-
-    def category_items(self, category):
-        if category not in self._categories:
-            raise CategoryException("No such category: {}".format(category))
-        return [item for item in self._items if item.category == category]
-
-    def find_item(self, item_id):
-        for item in self._items:
-            if item.id == item_id:
-                return item
-        return None
-
-    def add_item(self, item):
-        self.add_category(item.category)
-        if self.item_exists(item):
-            raise ItemException("Item [{}] already exists.".format(item))
-        self._items.append(item)
-
-    def item_exists(self, item):
-        return item in self._items
