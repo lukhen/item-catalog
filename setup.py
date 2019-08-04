@@ -10,12 +10,18 @@ with open("README.md") as f:
 setup(
     name="item-catalog",
     version="0.1.0",
-    py_modules=["flaskapp"],
+    py_modules=["flaskapp", "models"],
     description="Item cataloging engine",
     long_description=readme,
     author="Łukasz Hen",
     author_email="lukasz.hen@gmail.com",
     url="https://github.com/lukhen/item-catalog",
     packages=find_packages(exclude=("tests", "docs")),
-    install_requires=["flask"],
+    install_requires=[
+        "flask",
+        "flask-login",
+        "sqlalchemy",
+        "flask-dance",
+        "python-dotenv",
+    ],
 )
