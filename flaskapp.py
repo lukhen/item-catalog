@@ -68,13 +68,10 @@ app.cli.add_command(create_db)
 
 @app.route("/login")
 def login():
-    print(google.authorized)
     if not google.authorized:
         return redirect(url_for("google.login"))
     resp = google.get("/oauth2/v1/userinfo")
-    print(google)
     assert resp.ok
-    print(resp.json())
 
     login_user(User(id=resp.json()["id"], name=resp.json()["name"]))
     return "You are @{login} on Google".format(login=resp.json()["name"])
@@ -110,15 +107,6 @@ def categories_view():
         right_column_title="Recent Items",
         title_template=TITLE_TEMPLATE,
     )
-
-
-@app.route("/addcategory", methods=["GET", "POST"])
-def new_category():
-    if request.method == "GET":
-        return render_template(NEW_CATEGORY_TEMPLATE)
-    else:
-        catalog.add_category(request.form["category_name"])
-        return redirect(url_for("categories_view"))
 
 
 @app.route("/<category_name>")
