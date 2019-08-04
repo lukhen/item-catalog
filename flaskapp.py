@@ -1,4 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, flash
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    abort,
+    flash,
+    jsonify,
+)
 from flask_login import (
     LoginManager,
     current_user,
@@ -21,12 +30,13 @@ from flask_dance.contrib.google import make_google_blueprint, google
 TWO_COLUMNS_TEMPLATE = "two_columns_template.html"
 CATEGORIES_TEMPLATE = "categories_template.html"
 NEW_CATEGORY_TEMPLATE = "new_category.html"
-ITEMS_TEMPLATE = "category_items_view.html"
+CATEGORY_ITEMS_TEMPLATE = "category_items_view.html"
 ITEM_TEMPLATE = "item_template.html"
 NEW_ITEM_TEMPLATE = "new_item_template.html"
 DELETE_ITEM_TEMPLATE = "delete_item_template.html"
 EDIT_ITEM_TEMPLATE = "edit_item_template.html"
 TITLE_TEMPLATE = "title_template.html"
+ITEMS_TEMPLATE = "list_of_items_template.html"
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -93,7 +103,7 @@ def categories_view():
     return render_template(
         TWO_COLUMNS_TEMPLATE,
         categories=catalog.all_categories(),
-        items=[],
+        items=catalog.recent_items(3),
         left_column_template=CATEGORIES_TEMPLATE,
         right_column_template=ITEMS_TEMPLATE,
         title_template=TITLE_TEMPLATE,
@@ -112,15 +122,14 @@ def new_category():
 @app.route("/<category_name>")
 def category_view(category_name):
     try:
-        items = catalog.category_items(category_name)
-        print(catalog.all_categories())
         return render_template(
             TWO_COLUMNS_TEMPLATE,
-            items=items,
-            right_column_template=ITEMS_TEMPLATE,
+            items=catalog.category_items(category_name),
+            right_column_template=CATEGORY_ITEMS_TEMPLATE,
             categories=catalog.all_categories(),
             left_column_template=CATEGORIES_TEMPLATE,
             title_template=TITLE_TEMPLATE,
+            category=category_name,
         )
     except CategoryException as err:
         return abort(404)
@@ -192,6 +201,21 @@ def delete_item(item_id):
         catalog.delete_item(item)
         flash("You have deleted 1 item.")
         return redirect(url_for("categories_view"))
+
+
+@app.route("/catalog/json")
+def all_items():
+    return jsonify([item.to_dict() for item in catalog.all_items()])
+
+
+@app.route("/<category_name>/json")
+def category_view_json(category_name):
+    try:
+        items = catalog.category_items(category_name)
+        return jsonify([item.to_dict() for item in items])
+
+    except CategoryException as err:
+        return abort(404)
 
 
 def main():

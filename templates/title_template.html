@@ -1,5 +1,5 @@
-<div class="title">CATAOG APP</div>
-<div>
+<div class="title"><a href="{{url_for('categories_view')}}">CATAOG APP</a></div>
+<div class="login">
 {%  if current_user.is_authenticated %}
 {{current_user.name}} <a href='{{url_for("logout")}}'>(logout)</a>
 {% else %}

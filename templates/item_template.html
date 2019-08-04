@@ -1,8 +1,9 @@
 {% extends 'main_layout.html' %}
 {% block content %}
-<div class="">
+<div class="item">
 <h3>{{item.name}}</h3>
 <p>{{item.description}}</p>
+<p>{{item.created_date}}</p>
 <p>
   {%  if current_user.id == item.user_id %}
   <a href="{{url_for('edit_item', item_id=item.id)}}">edit</a>

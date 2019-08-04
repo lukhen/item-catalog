@@ -1,5 +1,6 @@
+import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer, DateTime, create_engine
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import ForeignKey
@@ -40,7 +41,16 @@ class Item(Base):
     name = Column(String)
     category = Column(String)
     description = Column(String)
+    created_date = Column(DateTime, default=datetime.datetime.utcnow)
     user_id = Column(String)
+
+    def to_dict(self):
+        return dict(
+            name=self.name,
+            category=self.category,
+            description=self.description,
+            created_date=self.created_date,
+        )
 
     def __eq__(self, other):
         if isinstance(other, Item):
@@ -105,6 +115,14 @@ class SqlAlchemyCatalog:
     def delete_item(self, item):
         self.session.delete(item)
         self.session.commit()
+
+    def recent_items(self, count):
+        return list(
+            self.session.query(Item).order_by(Item.created_date.desc()).limit(count)
+        )
+
+    def all_items(self):
+        return self.session.query(Item).all()
 
 
 class InMemoryCatalog:

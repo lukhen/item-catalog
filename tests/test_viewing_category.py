@@ -25,7 +25,7 @@ def test_app_category_exists(client, catalog, render):
     client.get("/category_name")
 
     assert _items_rendered_with_template(
-        render, irrelevant_items, flaskapp.ITEMS_TEMPLATE
+        render, irrelevant_items, flaskapp.CATEGORY_ITEMS_TEMPLATE
     )
 
 
