@@ -51,7 +51,8 @@ blueprint = make_google_blueprint(
 )
 app.register_blueprint(blueprint, url_prefix="/login")
 
-catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db")
+# SMELL: looks like a hack
+catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db?check_same_thread=False")
 
 
 @click.command(name="createdb")
