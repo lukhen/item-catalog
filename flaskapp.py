@@ -147,7 +147,7 @@ def item_view(item_id):
 @login_required
 def new_item():
     if request.method == "GET":
-        return render_template(NEW_ITEM_TEMPLATE)
+        return render_template(NEW_ITEM_TEMPLATE, categories=catalog.all_categories())
     else:
         catalog.add_item(
             Item(
