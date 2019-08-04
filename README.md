@@ -1,3 +1,12 @@
+# Some notes.
+I didn't use vagrant, which I find a bit useless.
+Therefore I also did't use postgres but sqlite instead. I hope it's enough :).
+I started the project using TDD approach with test doubles.
+Unfortunately during the development it started to be too cumbersome so I dropped
+it. So test don't work.
+I learnt that flask is quite difficult to use test doubles. Generally the design
+of "flask" is far from being decoupled. Nevertheless it's very handy and popular.
+
 # How to run the app.
 1. Clone the app from github.
 2. Run command: cd item-catalog
