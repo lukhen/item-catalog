@@ -1,4 +1,4 @@
-<h3>{{category}}</h3>
+<h2>{{category}}</h2>
 {% for item in items %}
 <a href="{{url_for('item_view', item_id=item.id)}}">{{ item.name }}</a>
 <br>
