@@ -151,6 +151,8 @@ def new_item():
 @login_required
 def edit_item(item_id):
     item = catalog.find_item(item_id)
+
+    # only users that created the item can delete it
     if item.user_id != current_user.id:
         flash(
             "You are not authorised to edit this item. {}, {}".format(
@@ -180,6 +182,8 @@ def edit_item(item_id):
 @login_required
 def delete_item(item_id):
     item = catalog.find_item(item_id)
+
+    # only users that created the item can delete it
     if item.user_id != current_user.id:
         flash(
             "You are not authorised to delete this item. {}, {}".format(
