@@ -214,6 +214,14 @@ def category_view_json(category_name):
         return abort(404)
 
 
+@app.route("/catalog/<item_id>/json")
+def item_view_json(item_id):
+    item = catalog.find_item(item_id)
+    if not item:
+        abort(404)
+    return jsonify(item.to_dict())
+
+
 def main():
     app.run(host="0.0.0.0", port=5000)
 
