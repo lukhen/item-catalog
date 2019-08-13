@@ -3,10 +3,10 @@
 <h2>Add new item:</h2>
 <form action="/newitem" method="post">
   Name: <br>
-  <input type='text' size='30' name='name'>
+  <input type='text' size='30' name='name' required minlength="1">
   <br>
   Category:<br>
-  <input type='text' size='30' name='category' list="categories" autocomplete="off">
+  <input type='text' size='30' name='category' list="categories" autocomplete="off" required minlength="1">
   <datalist id="categories">
     {% for category in categories %}
     <option value="{{category}}">
@@ -14,7 +14,7 @@
   </datalist>
   <br>
   Description:<br>
-  <textarea cols='60' rows='10' name='description'></textarea>
+  <textarea cols='60' rows='10' name='description' required minlength="1"></textarea>
   <br>
   <input type='submit' value='Add'>
 </form>

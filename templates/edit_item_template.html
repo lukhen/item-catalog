@@ -3,10 +3,10 @@
 <h2>Edit item:</h2>
 <form action="{{url_for('edit_item', item_id=item.id)}}" method="post">
   Name: <br>
-  <input type='text' size='30' name='name' value="{{item.name}}">
+  <input type='text' size='30' name='name' value="{{item.name}}" required minlength="1">
   <br>
   Category:<br>
-  <input type='text' size='30' name='category' list="categories" autocomplete="off" value="{{item.category}}">
+  <input type='text' size='30' name='category' list="categories" autocomplete="off" value="{{item.category}}" required minlength="1">
   <datalist id="categories">
     {% for category in categories %}
     <option value="{{category}}">
@@ -14,7 +14,7 @@
   </datalist>
   <br>
   Description:<br>
-  <textarea cols='60' rows='10' name='description'>{{item.description}}</textarea>
+  <textarea cols='60' rows='10' name='description' required minlength="1">{{item.description}}</textarea>
   <br>
   <input type='submit' value='Edit'>
 </form>
