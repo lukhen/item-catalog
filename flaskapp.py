@@ -15,7 +15,13 @@ from flask_login import (
     login_required,
     logout_user,
 )
-from models import CategoryException, ItemException, Item, SqlAlchemyCatalog, User
+from models import (
+    CategoryException,
+    ItemException,
+    Item,
+    SqlAlchemyCatalog,
+    User,
+)
 import click
 from dotenv import load_dotenv
 from flask_dance.contrib.google import make_google_blueprint, google
@@ -45,7 +51,9 @@ blueprint = make_google_blueprint(
 app.register_blueprint(blueprint, url_prefix="/login")
 
 # SMELL: looks like a hack
-catalog = SqlAlchemyCatalog(db_url="sqlite:///catalog.db?check_same_thread=False")
+catalog = SqlAlchemyCatalog(
+    db_url="sqlite:///catalog.db?check_same_thread=False"
+)
 
 
 @click.command(name="createdb")
@@ -123,7 +131,9 @@ def item_view(item_id):
     item = catalog.find_item(item_id)
     if not item:
         abort(404)
-    return render_template(ITEM_TEMPLATE, item=item, title_template=TITLE_TEMPLATE)
+    return render_template(
+        ITEM_TEMPLATE, item=item, title_template=TITLE_TEMPLATE
+    )
 
 
 @app.route("/newitem", methods=["GET", "POST"])

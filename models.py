@@ -109,7 +109,9 @@ class SqlAlchemyCatalog:
 
     def recent_items(self, count):
         return list(
-            self.session.query(Item).order_by(Item.created_date.desc()).limit(count)
+            self.session.query(Item)
+            .order_by(Item.created_date.desc())
+            .limit(count)
         )
 
     def all_items(self):
